@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".ui.register.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:inputType="textEmailAddress" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -68,18 +68,29 @@
                 android:textColorHint="@color/text_color_dark_mode"
                 android:inputType="textPassword" />
 
-            <Button
-                android:id="@+id/login_button"
+            <EditText
+                android:id="@+id/editTextRepeadPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:ems="10"
+                android:textColor="@color/text_color_dark_mode"
+                android:hint="Repead Password:"
+                android:textColorHint="@color/text_color_dark_mode"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:text="Register" />
 
             <TextView
-                android:id="@+id/tertiaryRegisterButton"
+                android:id="@+id/tertiaryLoginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="You do not have an account ?"
+                android:text="You have an account ?"
                 android:textAlignment="center"
                 android:textColor="@color/text_button_blue" />
         </LinearLayout>

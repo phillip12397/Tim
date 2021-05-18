@@ -1,4 +1,4 @@
-package com.developfuture.fortknox.ui.login;
+package com.developfuture.fortknox.ui.register;
 
 import android.os.Bundle;
 
@@ -16,15 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.developfuture.fortknox.R;
-import com.developfuture.fortknox.ui.home.HomeViewModel;
+import com.developfuture.fortknox.ui.login.LoginViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 
-    private LoginViewModel loginViewModel;
+    private RegisterViewModel loginViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,13 +34,13 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
 
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
+        View root = inflater.inflate(R.layout.fragment_register, container, false);
 
         final TextView emailEntry = root.findViewById(R.id.editTextTextEmailAddress);
-        final Button loginButton = root.findViewById(R.id.login_button);
-        final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryRegisterButton);
+        final Button loginButton = root.findViewById(R.id.register_button);
+        final TextView tertyaryLoginButton = root.findViewById(R.id.tertiaryLoginButton);
 
         loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 
@@ -54,14 +54,14 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Navigation.findNavController(root).navigate(R.id.navigateLoginToHome);
+                Navigation.findNavController(root).navigate(R.id.navigationRegisterToHome);
             }
         });
 
-        tertyaryRegisterButton.setOnClickListener(new View.OnClickListener() {
+        tertyaryLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(root).navigate(R.id.navigateLoginToRegister);
+                Navigation.findNavController(root).navigate(R.id.navigateRegisterToLogin);
             }
         });
 
