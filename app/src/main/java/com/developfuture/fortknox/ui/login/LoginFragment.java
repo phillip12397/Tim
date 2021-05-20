@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.developfuture.fortknox.R;
-import com.developfuture.fortknox.ui.home.HomeViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,8 +38,8 @@ public class LoginFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
 
         final TextView emailEntry = root.findViewById(R.id.editTextTextEmailAddress);
-        final Button loginButton = root.findViewById(R.id.login_button);
-        final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryRegisterButton);
+        final Button loginButton = root.findViewById(R.id.register_button);
+        final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
 
         loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 
