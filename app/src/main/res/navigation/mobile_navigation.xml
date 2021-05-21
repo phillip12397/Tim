@@ -25,8 +25,8 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.developfuture.fortknox.ui.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/navigateLoginToHome"
             app:destination="@id/nav_home" />
@@ -37,8 +37,8 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.developfuture.fortknox.ui.register.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        android:label="Register"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/navigateRegisterToLogin"
             app:destination="@id/loginFragment" />

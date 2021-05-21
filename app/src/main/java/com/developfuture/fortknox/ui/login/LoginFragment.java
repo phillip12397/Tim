@@ -42,7 +42,6 @@ public class LoginFragment extends Fragment {
         final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
 
         loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-
             @Override
             public void onChanged(@Nullable String string) {
                 emailEntry.setText(string);
@@ -52,7 +51,6 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Navigation.findNavController(root).navigate(R.id.navigateLoginToHome);
             }
         });

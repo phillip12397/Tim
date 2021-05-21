@@ -97,13 +97,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
             <Button
+                android:backgroundTint="@color/text_button_blue"
+                android:height="60dp"
                 android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/default_btn_style"
                 android:text="@string/loginBtnText"
                 app:layout_constraintBottom_toTopOf="@+id/tertiaryLoginButton"
                 app:layout_constraintEnd_toEndOf="parent"

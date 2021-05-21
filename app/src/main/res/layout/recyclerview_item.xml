@@ -21,7 +21,9 @@ limitations under the License. -->
     <TextView
         android:id="@+id/textView"
         style="@style/list_entry"
+        android:textColor="@color/text_color_dark_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         android:background="@drawable/login_frame_background" />
 </LinearLayout>

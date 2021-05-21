@@ -17,6 +17,7 @@ limitations under the License. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent">
 
     <EditText
@@ -26,17 +27,20 @@ limitations under the License. -->
         android:minHeight="20dp"
         android:fontFamily="sans-serif-light"
         android:hint="@string/hint_word"
+        android:textColorHint="@color/text_color_dark_mode"
+        android:textColor="@color/text_color_dark_mode"
         android:inputType="textAutoComplete"
         android:layout_margin="10dp"
         android:textSize="18sp" />
 
     <Button
         android:id="@+id/button_save"
+        android:backgroundTint="@color/text_button_blue"
+        android:textColorHint="@color/text_color_dark_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_700"
         android:text="@string/button_save"
         android:layout_margin="20dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/text_color_dark_mode" />
 
 </LinearLayout>
