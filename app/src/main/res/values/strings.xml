@@ -36,4 +36,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    
+    <string-array name="add_transaction_names">
+        <item>Food</item>
+        <item>Games</item>
+        <item>Gas Station</item>
+        <item>Party</item>
+        <item>Birthday</item>
+        <item>Sport</item>
+    </string-array>
 </resources>
