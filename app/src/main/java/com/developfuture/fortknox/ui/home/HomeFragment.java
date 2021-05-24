@@ -1,16 +1,17 @@
 package com.developfuture.fortknox.ui.home;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,29 +22,46 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.developfuture.fortknox.NewWordActivity;
+import com.developfuture.fortknox.FTViewModel;
+import com.developfuture.fortknox.FinanceAdapter;
+import com.developfuture.fortknox.FinanceTransaction;
 import com.developfuture.fortknox.R;
-import com.developfuture.fortknox.Word;
-import com.developfuture.fortknox.WordListAdapter;
-import com.developfuture.fortknox.WordViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static android.app.Activity.RESULT_OK;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     private HomeViewModel homeViewModel;
-    private WordViewModel mWordViewModel;
-
-    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private FTViewModel ftViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+
+        FinanceAdapter adapter = new FinanceAdapter();
+        recyclerView.setAdapter(adapter);
+
+        ftViewModel = new ViewModelProvider(this).get(FTViewModel.class);
+        ftViewModel.getAllFinances().observe(getViewLifecycleOwner(), new Observer<List<FinanceTransaction>>() {
+            @Override
+            public void onChanged(List<FinanceTransaction> financeTransactions) {
+                //update RecyclerView
+                adapter.setFinances(financeTransactions);
+            }
+        });
+
+        final TextView textView = root.findViewById(R.id.homeMoney);
 
         // Button shortcuts
         final ImageButton imageButton1 = root.findViewById(R.id.imageButton1);
@@ -55,108 +73,103 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                //textView.setText(s);
             }
         });
 
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
-        final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        //TODO philips floating button, need connection to DB function
 
-        // Get a new or existing ViewModel from the ViewModelProvider.
-        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
+        final FloatingActionButton detailedAdd = (FloatingActionButton) root.findViewById(R.id.fab);
+        detailedAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), words -> {
-            // Update the cached copy of the words in the adapter.
-            adapter.submitList(words);
+                final Dialog fbDialogue = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
+                fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+                fbDialogue.setContentView(R.layout.add_transaction);
+                fbDialogue.setCanceledOnTouchOutside(true);
+                fbDialogue.show();
+
+
+                final EditText addDate = fbDialogue.findViewById(R.id.addTransactionDate);
+                final EditText addPrice = fbDialogue.findViewById(R.id.addTransactionPrice);
+                addPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
+                final Button addTransaction = fbDialogue.findViewById(R.id.shortkeyAdd);
+
+                Spinner spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
+                // Create an ArrayAdapter using the string array and a default spinner layout
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.add_transaction_names, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                spinner.setAdapter(adapter);
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                final ImageButton closeButton = fbDialogue.findViewById(R.id.addTransactionClose);
+
+                addTransaction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = spinner.getSelectedItem().toString();
+                        String date = addDate.getText().toString();
+                        String price = addPrice.getText().toString() + "$";
+
+                        if(name.isEmpty() || date.isEmpty() || price.isEmpty()){
+                            Toast.makeText(getContext(),"Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            FinanceTransaction ft = new FinanceTransaction(name, date, price);
+                            ftViewModel.insert(ft);
+                            fbDialogue.dismiss();
+                        }
+                    }
+                });
+
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fbDialogue.dismiss();
+                    }
+                });
+            }
         });
 
-        //TODO philips floating button, need connection to DB function
-//        final FloatingActionButton detailedAdd = (FloatingActionButton) root.findViewById(R.id.fab);
-//        detailedAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                final Dialog fbDialogue = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
-//                fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-//                fbDialogue.setContentView(R.layout.add_transaction);
-//                fbDialogue.setCanceledOnTouchOutside(true);
-//                fbDialogue.show();
-//
-//                Spinner spinner = fbDialogue.findViewById(R.id.addTransactionSpinner);
-//                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.add_transaction_names, android.R.layout.simple_spinner_item);
-//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                spinner.setAdapter(adapter);
-//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        String text = parent.getItemAtPosition(position).toString();
-//                        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-//                final ImageButton closeButton = fbDialogue.findViewById(R.id.addTransactionClose);
-//
-//                closeButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        fbDialogue.dismiss();
-//                    }
-//                });
-//            }
-//        });
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-        /*
-            Spinner spinner = findViewById(R.id.addTransactionSpinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.add_transaction_names, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
-         */
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                ftViewModel.delete(adapter.getFinanceAt(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(recyclerView);
 
         imageButton1.setOnLongClickListener(this);
         imageButton2.setOnLongClickListener(this);
         imageButton3.setOnLongClickListener(this);
         imageButton4.setOnLongClickListener(this);
         imageButton5.setOnLongClickListener(this);
-        //imageButton6.setOnLongClickListener(this);
 
         imageButton1.setOnClickListener(this);
         imageButton2.setOnClickListener(this);
         imageButton3.setOnClickListener(this);
         imageButton4.setOnClickListener(this);
         imageButton5.setOnClickListener(this);
-        //imageButton6.setOnClickListener(this);
-
-        FloatingActionButton fab = root.findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), NewWordActivity.class);
-            startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
-        });
 
         return root;
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Word word = new Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
-            mWordViewModel.insert(word);
-        } else {
-//            Toast.makeText(
-//                    getApplicationContext(),
-//                    R.string.empty_not_saved,
-//                    Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
@@ -169,8 +182,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         fbDialogue.show();
 
         final TextView textView = fbDialogue.findViewById(R.id.shortkeyID);
+        final EditText editText = fbDialogue.findViewById(R.id.shortkeyIcon);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         final Button add =fbDialogue.findViewById(R.id.shortkeyAdd);
         final ImageButton closeButton = fbDialogue.findViewById(R.id.shortkeyClose);
+
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +197,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                String date = dtf.format(now);
+
+                String name = textView.getText().toString();
+                String price = editText.getText().toString() + "$";
+                FinanceTransaction ft = new FinanceTransaction(name, date, price);
+                ftViewModel.insert(ft);
                 fbDialogue.dismiss();
             }
         });
@@ -188,7 +213,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         switch (id){
             case R.id.imageButton1:
                 textView.setText("Food");
-                System.out.println("test1");
                 break;
             case R.id.imageButton2:
                 textView.setText("Games");
@@ -206,9 +230,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 textView.setText("Birthday");
                 System.out.println("test5");
                 break;
-            //case R.id.imageButton6:
-            //    System.out.println("test6");
-            //    break;
             default:
                 System.out.println("nothing clicked");
         }
@@ -249,9 +270,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             case R.id.imageButton5:
                 System.out.println("test5 Hold");
                 return true;
-            //case R.id.imageButton6:
-            //    System.out.println("test6");
-            //    break;
             default:
                 System.out.println("nothing clicked");
         }
