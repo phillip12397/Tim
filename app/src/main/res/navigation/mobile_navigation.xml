@@ -46,4 +46,14 @@
             android:id="@+id/navigationRegisterToHome"
             app:destination="@id/nav_home" />
     </fragment>
+    <fragment
+        android:id="@+id/legalNotificationFragment"
+        android:name="com.developfuture.fortknox.ui.legalNotification.LegalNotificationFragment"
+        android:label="fragment_legalnotification"
+        tools:layout="@layout/fragment_legalnotification" />
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.developfuture.fortknox.ui.privacy.PrivacyFragment"
+        android:label="fragment_privacy"
+        tools:layout="@layout/fragment_privacy" />
 </navigation>
