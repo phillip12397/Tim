@@ -12,17 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.developfuture.fortknox.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.developfuture.fortknox.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/loginFragment"
         android:name="com.developfuture.fortknox.ui.login.LoginFragment"
         android:label="Login"
@@ -33,6 +22,12 @@
         <action
             android:id="@+id/navigateLoginToRegister"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_legalNotificationFragment"
+            app:destination="@id/legalNotificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -45,5 +40,21 @@
         <action
             android:id="@+id/navigationRegisterToHome"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_registerFragment_to_legalNotificationFragment"
+            app:destination="@id/legalNotificationFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/legalNotificationFragment"
+        android:name="com.developfuture.fortknox.ui.legalNotification.LegalNotificationFragment"
+        android:label="fragment_legalnotification"
+        tools:layout="@layout/fragment_legalnotification" />
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.developfuture.fortknox.ui.privacy.PrivacyFragment"
+        android:label="fragment_privacy"
+        tools:layout="@layout/fragment_privacy" />
 </navigation>
