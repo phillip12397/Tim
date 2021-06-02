@@ -9,6 +9,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.developfuture.fortknox.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +33,9 @@ import com.developfuture.fortknox.R;
  */
 public class LoginFragment extends Fragment {
 
+    private View root = null;
     private LoginViewModel loginViewModel;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +45,14 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        root = inflater.inflate(R.layout.fragment_login, container, false);
 
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
-
-        final TextView emailEntry = root.findViewById(R.id.editTextTextEmailAddress);
+        final TextView emailEntry = root.findViewById(R.id.editTextEmailAddress);
+        final TextView passwordEntry = root.findViewById(R.id.editTextPassword);
         final Button loginButton = root.findViewById(R.id.register_button);
         final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
 
@@ -51,7 +66,10 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(root).navigate(R.id.navigateLoginToHome);
+                String mail = emailEntry.getText().toString();
+                String password = passwordEntry.getText().toString();
+
+                signIn(mail, password);
             }
         });
 
@@ -63,5 +81,58 @@ public class LoginFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void signIn(String email, String password) {
+        // [START sign_in_with_email]
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                            Navigation.findNavController(root).navigate(R.id.navigateLoginToHome);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(getActivity(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+        // [END sign_in_with_email]
+    }
+
+    private void sendEmailVerification() {
+        // Send verification email
+        // [START send_email_verification]
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Email sent
+                    }
+                });
+        // [END send_email_verification]
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            reload();
+        }
+    }
+
+    private void reload() { }
+
+    private void updateUI(FirebaseUser user) {
+
     }
 }

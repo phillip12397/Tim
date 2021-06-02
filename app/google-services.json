@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "457484376937",
+    "project_id": "fortknox-56731",
+    "storage_bucket": "fortknox-56731.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457484376937:android:b0fce16c09945fdefc3bf8",
+        "android_client_info": {
+          "package_name": "com.developfuture.fortknox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457484376937-nb8cnf6ppoil5l84k02d1tpod7j70f3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmtPb5gPCl0sHUdijqftkPPeNkfS9i9SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457484376937-nb8cnf6ppoil5l84k02d1tpod7j70f3c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
