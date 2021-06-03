@@ -6,42 +6,71 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".ui.privacy.PrivacyFragment">
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
         <TextView
             android:id="@+id/text_privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Privacy"
+            android:text="@string/headline_privacy_text"
             android:textAlignment="center"
             android:textColor="@color/text_color_dark_mode"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textStyle="bold" />
-
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="30dp"
-            android:textSize="18dp"
-            android:text="bla bla"
-            android:textColor="@color/text_color_dark_mode"/>
-
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:text="@string/google_analitycs_headline_text"/>
+                <TextView
+                    android:id="@+id/text_firebase_analytics"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:text="@string/google_analytics_text"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:textSize="18sp" />
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:text="@string/firebase_auth_headline_text"/>
+                <TextView
+                    android:id="@+id/text_legal"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:text="@string/legal_text_firebase"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
     <TextView
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom|center"
-        android:text="Copyright 2021"
-        android:textColor="@color/text_color_dark_mode"
-        android:textSize="12dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"/>
-
+        android:layout_gravity="bottom"
+        android:background="@color/background"
+        android:gravity="bottom|center"
+        android:text="@string/copyright_text"
+        android:textColor="@color/text_color_dark_mode"
+        android:textSize="12sp" />
 </RelativeLayout>

@@ -18,7 +18,12 @@ public class PrivacyFragment extends Fragment {
 
     private PrivacyViewModel privacyViewModel;
 
-    public View onCreatView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         privacyViewModel = new ViewModelProvider(this).get(PrivacyViewModel.class);
         View root = inflater.inflate(R.layout.fragment_privacy, container, false);
