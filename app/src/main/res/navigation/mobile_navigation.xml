@@ -23,10 +23,10 @@
             android:id="@+id/navigateLoginToRegister"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_privacyFragment"
+            android:id="@+id/navigateLoginToPrivacy"
             app:destination="@id/privacyFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_legalNotificationFragment"
+            android:id="@+id/navigateLoginToLegal"
             app:destination="@id/legalNotificationFragment" />
     </fragment>
     <fragment
@@ -41,20 +41,20 @@
             android:id="@+id/navigationRegisterToHome"
             app:destination="@id/nav_home" />
         <action
-            android:id="@+id/action_registerFragment_to_legalNotificationFragment"
+            android:id="@+id/navigationRegisterToLegal"
             app:destination="@id/legalNotificationFragment" />
         <action
-            android:id="@+id/action_registerFragment_to_privacyFragment"
+            android:id="@+id/navigationRegisterToPrivacy"
             app:destination="@id/privacyFragment" />
     </fragment>
     <fragment
         android:id="@+id/legalNotificationFragment"
         android:name="com.developfuture.fortknox.ui.legalNotification.LegalNotificationFragment"
-        android:label="fragment_legalnotification"
+        android:label="Legal Notification"
         tools:layout="@layout/fragment_legalnotification" />
     <fragment
         android:id="@+id/privacyFragment"
         android:name="com.developfuture.fortknox.ui.privacy.PrivacyFragment"
-        android:label="fragment_privacy"
+        android:label="Privacy"
         tools:layout="@layout/fragment_privacy" />
 </navigation>

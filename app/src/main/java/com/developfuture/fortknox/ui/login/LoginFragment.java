@@ -51,10 +51,17 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         root = inflater.inflate(R.layout.fragment_login, container, false);
 
+        // Email password and login button
         final TextView emailEntry = root.findViewById(R.id.editTextEmailAddress);
         final TextView passwordEntry = root.findViewById(R.id.editTextPassword);
         final Button loginButton = root.findViewById(R.id.register_button);
-        final TextView tertyaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
+
+        // Go to register button
+        final TextView tertiaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
+
+        // Register and data protection buttons
+        final TextView tertiaryLegalButton = root.findViewById(R.id.legalLoginText);
+        final TextView tertiaryRegisterDataButton = root.findViewById(R.id.dataProtectionLoginText);
 
         loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -73,10 +80,24 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        tertyaryRegisterButton.setOnClickListener(new View.OnClickListener() {
+        tertiaryRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(root).navigate(R.id.navigateLoginToRegister);
+            }
+        });
+
+        tertiaryLegalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(root).navigate(R.id.navigateLoginToLegal);
+            }
+        });
+
+        tertiaryRegisterDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(root).navigate(R.id.navigateLoginToPrivacy);
             }
         });
 
@@ -132,7 +153,5 @@ public class LoginFragment extends Fragment {
 
     private void reload() { }
 
-    private void updateUI(FirebaseUser user) {
-
-    }
+    private void updateUI(FirebaseUser user) { }
 }

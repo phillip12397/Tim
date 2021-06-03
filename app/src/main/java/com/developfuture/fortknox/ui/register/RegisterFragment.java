@@ -49,10 +49,17 @@ public class RegisterFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         root = inflater.inflate(R.layout.fragment_register, container, false);
 
+        // Email password and register button
         final TextView emailEntry = root.findViewById(R.id.editTextEmailAddress);
         final TextView passwordEntry = root.findViewById(R.id.editTextPassword);
         final Button registerButton = root.findViewById(R.id.register_button);
-        final TextView tertyaryLoginButton = root.findViewById(R.id.tertiaryLoginButton);
+
+        // Go to login button
+        final TextView tertiaryLoginButton = root.findViewById(R.id.tertiaryLoginButton);
+
+        // Register and data protection buttons
+        final TextView tertiaryRegisterLegalButton = root.findViewById(R.id.legalRegisterText);
+        final TextView tertiaryRegisterDataButton = root.findViewById(R.id.dataProtectionRegisterText);
 
         loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 
@@ -73,10 +80,24 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        tertyaryLoginButton.setOnClickListener(new View.OnClickListener() {
+        tertiaryLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(root).navigate(R.id.navigateRegisterToLogin);
+            }
+        });
+
+        tertiaryRegisterLegalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(root).navigate(R.id.navigationRegisterToLegal);
+            }
+        });
+
+        tertiaryRegisterDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(root).navigate(R.id.navigationRegisterToPrivacy);
             }
         });
 
@@ -123,7 +144,5 @@ public class RegisterFragment extends Fragment {
 
     private void reload() { }
 
-    private void updateUI(FirebaseUser user) {
-
-    }
+    private void updateUI(FirebaseUser user) { }
 }
