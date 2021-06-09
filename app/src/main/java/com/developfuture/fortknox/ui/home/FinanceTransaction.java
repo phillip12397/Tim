@@ -1,4 +1,4 @@
-package com.developfuture.fortknox;
+package com.developfuture.fortknox.ui.home;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

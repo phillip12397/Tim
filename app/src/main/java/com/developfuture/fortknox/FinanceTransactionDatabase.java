@@ -9,6 +9,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.developfuture.fortknox.ui.home.FinanceTransaction;
+import com.developfuture.fortknox.ui.home.FinanceTransactionDao;
+
 @Database(entities = {FinanceTransaction.class}, version = 1)
 public abstract class FinanceTransactionDatabase extends RoomDatabase {
 
