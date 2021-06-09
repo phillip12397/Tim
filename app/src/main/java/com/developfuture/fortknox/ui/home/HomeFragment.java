@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.developfuture.fortknox.FTViewModel;
 import com.developfuture.fortknox.FinanceAdapter;
-import com.developfuture.fortknox.FinanceTransaction;
 import com.developfuture.fortknox.R;
+import com.developfuture.fortknox.spinner.SpinnerAdapter;
+import com.developfuture.fortknox.spinner.Transaction;
+import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
@@ -40,6 +41,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     private HomeViewModel homeViewModel;
     private FTViewModel ftViewModel;
+    private Spinner spinner;
+    private TransaktionTypes transaktionTypes = new TransaktionTypes();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -62,7 +65,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         });
 
         final TextView textView = root.findViewById(R.id.homeMoney);
-
         // Button shortcuts
         final ImageButton imageButton1 = root.findViewById(R.id.imageButton1);
         final ImageButton imageButton2 = root.findViewById(R.id.imageButton2);
@@ -78,7 +80,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         });
 
         //TODO philips floating button, need connection to DB function
-
         final FloatingActionButton detailedAdd = (FloatingActionButton) root.findViewById(R.id.fab);
         detailedAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
                 final Dialog fbDialogue = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
                 fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-                fbDialogue.setContentView(R.layout.add_transaction);
+                fbDialogue.setContentView(R.layout.popup_add_transaction);
                 fbDialogue.setCanceledOnTouchOutside(true);
                 fbDialogue.show();
 
@@ -96,18 +97,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 addPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
                 final Button addTransaction = fbDialogue.findViewById(R.id.shortkeyAdd);
 
-                Spinner spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
-                // Create an ArrayAdapter using the string array and a default spinner layout
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.add_transaction_names, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                spinner.setAdapter(adapter);
+
+                spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
+                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, transaktionTypes.getTransactionTypesArrayList());
+                spinner.setAdapter(customAdaptar);
+
+//                // Create an ArrayAdapter using the string array and a default spinner layout
+//                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.add_transaction_names, android.R.layout.simple_spinner_item);
+//                // Specify the layout to use when the list of choices appears
+//                adapter.setDropDownViewResource(R.layout.custom_spinner_item);
+//                // Apply the adapter to the spinner
+//                spinner.setAdapter(adapter);
 
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                     }
 
                     @Override
@@ -121,7 +125,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 addTransaction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String name = spinner.getSelectedItem().toString();
+                        String name = transaktionTypes.getNameById(spinner.getSelectedItemPosition());
                         String date = addDate.getText().toString();
                         String price = addPrice.getText().toString() + "$";
 
@@ -173,8 +177,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    public void onClick(View view) {
+        int id = view.getId();
         final Dialog fbDialogue = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
         fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
         fbDialogue.setContentView(R.layout.popup_home_shortkeys);

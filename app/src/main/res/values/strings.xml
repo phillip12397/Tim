@@ -7,10 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+<!--    menu strings -->
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu_investments">Investments</string>
+    <string name="menu_settings">Settings</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_save">Speichern</string>
     <string name="hint_word">Gib dein Text hier ein</string>
@@ -49,6 +50,7 @@
     <string name="google_analytics_text">Mit den in diesem Abschnitt aufgeführten Dienstleistungen kann der Eigentümer den Datenverkehr überwachen und analysieren sowie das Verhalten von Nutzern nachverfolgen. Wir setzen solche Dienste auf Grundlage unserer berechtigten Interessen (d.h. Interesse an der Analyse, Optimierung und wirtschaftlichem Betrieb unseres Onlineangebotes im Sinne des Art. 6 Abs. 1 lit. f. DSGVO) ein. Google Analytics mit IP-Anonymisierung (Google Inc.) Google Analytics ist ein Webanalysedienst von Google Inc. („Google“). Google verwendet die erhobenen Daten, um nachzuverfolgen und zu untersuchen, wie diese Website genutzt wird, Berichte über die Aktivitäten von Nutzern zu verfassen und diese gemeinsam mit anderen Google-Diensten zu nutzen. Google kann die erhobenen Daten verwenden, um die Anzeigen seines eigenen Werbenetzwerks zu kontextualisieren und personalisieren. Auf dieser Webseite wurde die IP-Anonymisierung aktiviert, so dass die IP-Adresse der Nutzer von Google innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt wird. Nur in Ausnahmefällen wird die volle IP-Adresse an einen Server von Google in den USA übertragen und dort gekürzt. Erhobene personenbezogene Daten: Cookie und Nutzungsdaten. Wir nutzen nach Möglichkeit Server mit einem Standort innerhalb der EU. Es kann jedoch nicht ausgeschlossen werden, dass Daten auch in die USA übertragen werden. Für die personenbezogene Daten, die in die USA übertragen werden, hat sich Google dem EU-US Privacy Shield unterworfen: www.privacyshield.gov/participant Weitere Informationen zur Datennutzung durch Google, Einstellungs- und Widerspruchsmöglichkeiten, erfahren Sie in der Datenschutzerklärung von Google (https://policies.google.com/technologies/ads) sowie in den Einstellungen für die Darstellung von Werbeeinblendungen durch Google(https://adssettings.google.com/authenticated).</string>
     <string name="google_analitycs_headline_text">Google Analitycs</string>
     <string name="firebase_auth_headline_text">Firebase Auth</string>
+    <string name="logout_button_text">Logout</string>
 
     <string-array name="add_transaction_names">
         <item>Food</item>

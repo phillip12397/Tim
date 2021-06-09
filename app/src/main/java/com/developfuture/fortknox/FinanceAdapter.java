@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.developfuture.fortknox.ui.home.FinanceTransaction;
+
 import java.util.ArrayList;
 import java.util.List;
 

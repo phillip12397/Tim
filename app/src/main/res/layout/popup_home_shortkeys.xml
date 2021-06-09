@@ -5,7 +5,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="140dp"
     android:layout_width="380dp"
-    android:background="@drawable/login_frame_background"
+    android:background="@drawable/popup_frame_background"
     android:layout_height="180dp">
 
     <RelativeLayout
@@ -39,7 +39,7 @@
         android:padding="7dp"
         android:hint="Price:"
         android:textColorHint="@color/text_color_dark_mode"
-        android:background="@drawable/shortkey_frame_background"/>
+        android:background="@drawable/short_key_frame_background"/>
 
     <Button
         android:id="@+id/shortkeyAdd"

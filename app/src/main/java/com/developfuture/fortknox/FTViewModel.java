@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.developfuture.fortknox.ui.home.FinanceTransaction;
+
 import java.util.List;
 
 public class FTViewModel extends AndroidViewModel {

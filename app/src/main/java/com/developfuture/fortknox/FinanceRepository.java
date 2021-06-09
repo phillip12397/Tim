@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.developfuture.fortknox.ui.home.FinanceTransaction;
+import com.developfuture.fortknox.ui.home.FinanceTransactionDao;
+
 import java.util.List;
 
 public class FinanceRepository {
