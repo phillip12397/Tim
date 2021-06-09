@@ -41,6 +41,10 @@ public class TransaktionTypes {
     }
 
     public void initTransactionType() {
+        if(transactionTypesArrayList != null) {
+            transactionTypesArrayList.clear();
+        }
+
         Transaction transaction1 = new Transaction("0", "Food");
         Transaction transaction2 = new Transaction("1", "Games");
         Transaction transaction3 = new Transaction("2", "Gas Station");
