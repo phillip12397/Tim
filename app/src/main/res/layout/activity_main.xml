@@ -8,6 +8,11 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:background="@color/background"
@@ -18,10 +23,5 @@
         app:headerLayout="@layout/nav_header_main"
         android:fitsSystemWindows="true"
         app:menu="@menu/activity_main_drawer" />
-
-    <include
-        layout="@layout/app_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
