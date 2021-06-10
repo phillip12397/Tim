@@ -11,17 +11,20 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.onFragmentBtnSelected {
 
-    private AppBarConfiguration mAppBarConfiguration;
+    AppBarConfiguration mAppBarConfiguration;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,28 +33,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_app_bar_open_drawer_description, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_investments, R.id.nav_settings)
-                .setDrawerLayout(drawer)
+                .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
     }
 
     @Override
@@ -66,14 +60,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(item.getItemId()) {
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
+                break;
             case R.id.nav_investments:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new InvestmentsFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment, new InvestmentsFragment()).commit();
+                break;
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment, new SettingsFragment()).commit();
+                break;
             case R.id.logout_button:
                 signOut();
+                break;
         }
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -81,5 +80,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // [START auth_sign_out]
         FirebaseAuth.getInstance().signOut();
         // [END auth_sign_out]
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onButtonSelected() {
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_investments, new HomeFragment()).commit();
+
     }
 }

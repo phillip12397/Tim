@@ -6,19 +6,13 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.developfuture.fortknox.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
         android:id="@+id/loginFragment"
         android:name="com.developfuture.fortknox.ui.login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/navigateLoginToHome"
-            app:destination="@id/nav_home" />
+            app:destination="@id/navigation" />
         <action
             android:id="@+id/navigateLoginToRegister"
             app:destination="@id/registerFragment" />
@@ -39,7 +33,7 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/navigationRegisterToHome"
-            app:destination="@id/nav_home" />
+            app:destination="@id/navigation" />
         <action
             android:id="@+id/navigationRegisterToLegal"
             app:destination="@id/legalNotificationFragment" />
@@ -57,4 +51,43 @@
         android:name="com.developfuture.fortknox.ui.privacy.PrivacyFragment"
         android:label="Privacy"
         tools:layout="@layout/fragment_privacy" />
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/nav_home">
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.developfuture.fortknox.ui.settings.SettingsFragment"
+            android:label="fragment_settings"
+            tools:layout="@layout/fragment_settings">
+            <action
+                android:id="@+id/action_settingsFragment_to_investmentsFragment"
+                app:destination="@id/investmentsFragment" />
+            <action
+                android:id="@+id/action_settingsFragment_to_nav_home"
+                app:destination="@id/nav_home" />
+        </fragment>
+        <fragment
+            android:id="@+id/investmentsFragment"
+            android:name="com.developfuture.fortknox.ui.investments.InvestmentsFragment"
+            android:label="fragment_investments"
+            tools:layout="@layout/fragment_investments">
+            <action
+                android:id="@+id/action_investmentsFragment_to_nav_home"
+                app:destination="@id/nav_home" />
+            <action
+                android:id="@+id/action_investmentsFragment_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/nav_home"
+            android:name="com.developfuture.fortknox.ui.home.HomeFragment"
+            android:label="@string/menu_home"
+            tools:layout="@layout/fragment_home">
+            <action
+                android:id="@+id/action_nav_home_to_investmentsFragment"
+                app:destination="@id/investmentsFragment" />
+            <action
+                android:id="@+id/action_nav_home_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
+        </fragment>
+    </navigation>
 </navigation>
