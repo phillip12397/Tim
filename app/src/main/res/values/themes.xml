@@ -17,6 +17,7 @@
     <style name="Theme.FortKnox.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="statusBarBackground">@android:color/transparent</item>
     </style>
 
     <style name="Theme.FortKnox.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

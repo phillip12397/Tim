@@ -1,6 +1,7 @@
 package com.developfuture.fortknox.ui.home;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private FTViewModel ftViewModel;
     private Spinner spinner;
     private TransaktionTypes transaktionTypes = new TransaktionTypes();
+    private onFragmentBtnSelected listener;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -278,5 +280,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 System.out.println("nothing clicked");
         }
         return false;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context){
+        super.onAttach(context);
+        if(context instanceof onFragmentBtnSelected){
+            listener = (onFragmentBtnSelected) context;
+        }
+    }
+    public interface onFragmentBtnSelected {
+        public void onButtonSelected();
     }
 }
