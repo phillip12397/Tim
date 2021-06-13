@@ -4,25 +4,27 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 import com.developfuture.fortknox.ui.home.FinanceTransactionDao;
+import com.developfuture.fortknox.ui.investments.Investments;
+import com.developfuture.fortknox.ui.investments.InvestmentsDao;
 
-@Database(entities = {FinanceTransaction.class}, version = 1)
-public abstract class FinanceTransactionDatabase extends RoomDatabase {
+@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class}, version = 2)
+public abstract class Database extends RoomDatabase {
 
-    private static FinanceTransactionDatabase instance;
+    private static Database instance;
 
     public abstract FinanceTransactionDao transDao();
+    public abstract InvestmentsDao iDao();
 
-    public static synchronized FinanceTransactionDatabase getInstance(Context context){
+    public static synchronized Database getInstance(Context context){
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    FinanceTransactionDatabase.class, "finance_database")
+                    Database.class, "finance_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
@@ -37,11 +39,14 @@ public abstract class FinanceTransactionDatabase extends RoomDatabase {
             new PopulateDbAsyncTask(instance).execute();
         }
     };
+
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private FinanceTransactionDao ftDao;
-        private PopulateDbAsyncTask(FinanceTransactionDatabase db) {
+
+        private PopulateDbAsyncTask(Database db) {
             ftDao = db.transDao();
         }
+
         @Override
         protected Void doInBackground(Void... voids) {
             ftDao.insert(new FinanceTransaction("Einkaufen", "30.04.2019", "35$"));

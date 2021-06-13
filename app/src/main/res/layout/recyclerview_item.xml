@@ -26,7 +26,7 @@ limitations under the License. -->
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/financePrice"
+            android:id="@+id/recyclerView3"
             android:textColor="@color/text_color_dark_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@ limitations under the License. -->
             android:text="price" />
 
         <TextView
-            android:id="@+id/financeName"
+            android:id="@+id/recyclerView1"
             android:textColor="@color/text_color_dark_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@ limitations under the License. -->
             android:layout_margin="2dp"/>
 
         <TextView
-            android:id="@+id/financeDate"
+            android:id="@+id/recyclerView2"
             android:textColor="@color/text_color_dark_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
