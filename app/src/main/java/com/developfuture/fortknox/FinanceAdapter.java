@@ -53,9 +53,9 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.FinanceH
 
         public FinanceHolder(View itemView){
             super(itemView);
-            financeName = itemView.findViewById(R.id.financeName);
-            financeDate = itemView.findViewById(R.id.financeDate);
-            financePrice = itemView.findViewById(R.id.financePrice);
+            financeName = itemView.findViewById(R.id.recyclerView1);
+            financeDate = itemView.findViewById(R.id.recyclerView2);
+            financePrice = itemView.findViewById(R.id.recyclerView3);
 
         }
     }
