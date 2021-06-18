@@ -40,8 +40,34 @@
     <string name="legal_notification_text">Legal information</string>
     <string name="and_text">and</string>
     <string name="data_protection_text">data protection</string>
-    <string name="text_privacy">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="text_privacy">Anschrift:<br/><br/>
+                                <br/><br/>
+                                FortKnox GmbH<br/>
+                                Luxemburger Str. 10, 13353<br/>
+                                Berlin, Deutschland<br/>
+                                030 45040<br/>
+                                info@fortknox.de<br/>
+                                <br/><br/>
+                                Vertreten durch:<br/>
+                                Phillip Engels<br/>
+                                <br/><br/>
+                                Eingetragen im Amtsgericht Berlin<br/>
+                                Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:<br/>
+                                Phillip Engels, Percy Mummelthey, Muhammed Sezen, Nora Tuchel, Kevin Halat.<br/>
+                                <br/><br/>
+                                Kontakt:<br/>
+                                <br/><br/>
+                                Bei allgemeinen Fragen, erreichst du uns per E-Mail unter fragen@fortknox.de .<br/>
+                                <br/><br/>
+                                Bei sicherheitsrelevanten Fragen, stehen wir dir unter schutz@fortknox.de zur Verfügung.<br/>
+                                <br/><br/>
+                                Haftung für Inhalte:<br/>
+                                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. <br/>Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.<br/>
+                                Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.<br/>
+                                Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.<br/>
+                                Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.<br/>
+                                Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich.<br/>
+                                Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</string>
     <string name="legal_text_firebase">Firebase Authentication (Google Inc.) Firebase Authentication ist ein von Google Inc. bereitgestellter Anmelde- und Authentifizierungsdienst.<br/> Um den Anmelde- und Authentifizierungsprozess zu vereinfachen, kann Firebase Authentication Identitätsdienste von Drittparteien benutzen und die Informationen auf ihrer Plattform speichern.<br/> Erhobene personenbezogene Daten: E-Mail, Nutzername, Passwort Wir nutzen nach Möglichkeit Server mit einem Standort innerhalb der EU.<br/> Es ist aber nicht auszuschließen, dass Daten auch in die USA übertragen werden.<br/> Für die personenbezogene Daten, die in die USA übertragen werden, hat sich Google dem EU-US Privacy Shield unterworfen: www.privacyshield.gov/participant.<br/> Nähere Informationen zu Google Firebase und Datenschutz finden Sie unter https://policies.google.com/privacy sowie firebase.google.com.</string>
     <string name="copyright_text">Copyright 2021</string>
     <string name="headline_legal_notification">Legal Notification</string>
