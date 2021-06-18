@@ -1,4 +1,4 @@
-##Fort Knox
+Fort Knox
 
 Wenn du langfristig viel Geld sparen willst, musst du deine Finanzen im Überblick behalten. 
 Das geht am leichtesten mit einem Haushaltsbuch. Das klassische Haushaltsbuch in Papierform war gestern. 

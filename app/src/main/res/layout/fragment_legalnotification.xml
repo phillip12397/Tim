@@ -50,11 +50,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <TextView
+                    android:id="@+id/legalContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="30sp"
                     android:text="@string/text_privacy"
-                    android:textAlignment="center"
                     android:textColor="@color/text_color_dark_mode"
                     android:textSize="18sp" />
             </LinearLayout>
