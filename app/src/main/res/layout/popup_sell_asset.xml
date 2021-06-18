@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="140dp"
+    android:layout_width="380dp"
+    android:background="@drawable/popup_frame_background"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/addTransactionClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:background="@drawable/ic_close" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/assetSpinnerSell"
+            android:textColor="@color/text_color_dark_mode"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/text_color_dark_mode"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+
+        <EditText
+            android:id="@+id/addTransactionDate"
+            android:layout_margin="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:hint="stock:"
+            android:textColor="@color/text_color_dark_mode"
+            android:textColorHint="@color/text_color_dark_mode"
+            android:background="@drawable/short_key_frame_background"/>
+
+        <EditText
+            android:id="@+id/addTransactionPrice"
+            android:layout_margin="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:hint="Price:"
+            android:textColor="@color/text_color_dark_mode"
+            android:textColorHint="@color/text_color_dark_mode"
+            android:background="@drawable/short_key_frame_background"/>
+
+        <EditText
+            android:id="@+id/addTransactionDiscounter"
+            android:layout_margin="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:hint="Discounter:"
+            android:textColor="@color/text_color_dark_mode"
+            android:textColorHint="@color/text_color_dark_mode"
+            android:background="@drawable/short_key_frame_background"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sellAssetPopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="bottom"
+        android:text="Sell Asset"
+        android:backgroundTint="@color/new_cyan"/>
+
+</FrameLayout>
