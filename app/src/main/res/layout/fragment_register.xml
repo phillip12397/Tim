@@ -53,9 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/registerHeadlineText"
                 android:textAlignment="center"
                 android:textColor="@color/text_color_dark_mode"
@@ -67,15 +65,15 @@
 
             <EditText
                 android:id="@+id/editTextEmailAddress"
+                android:background="@drawable/entry_frame_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="@string/mailHint"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/text_color_dark_mode"
-                android:textColorHint="@color/text_color_dark_mode"
+                android:textColorHint="@color/hint_text_color"
                 app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.153"
@@ -85,34 +83,19 @@
 
             <EditText
                 android:id="@+id/editTextPassword"
+                android:background="@drawable/entry_frame_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="@string/passwordHint"
                 android:inputType="textPassword"
                 android:textColor="@color/text_color_dark_mode"
-                android:textColorHint="@color/text_color_dark_mode"
+                android:textColorHint="@color/hint_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
                 android:autofillHints="" />
-
-<!--            <EditText-->
-<!--                android:id="@+id/editTextPasswordRepeat"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                android:ems="10"-->
-<!--                android:hint="@string/repeadPasswordHint"-->
-<!--                android:inputType="textPassword"-->
-<!--                android:textColor="@color/text_color_dark_mode"-->
-<!--                android:textColorHint="@color/text_color_dark_mode"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />-->
 
             <Button
                 android:id="@+id/register_button"

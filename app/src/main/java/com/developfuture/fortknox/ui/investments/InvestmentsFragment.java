@@ -24,6 +24,7 @@ import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
+import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
+    private TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

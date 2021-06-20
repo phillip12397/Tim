@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    compile 'de.hdodenhof:circleimageview:1.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin

@@ -52,6 +52,8 @@
     <string name="logout_button_text">Logout</string>
     <string name="defailt_account_password">Test12345.</string>
     <string name="default_account_user">percy.mummelthey@gmail.com</string>
+    <string name="profile_settings_headline_text">Profilesettings</string>
+    <string name="app_settings_text">App-Settings</string>
 
     <string-array name="add_transaction_names">
         <item>Food</item>

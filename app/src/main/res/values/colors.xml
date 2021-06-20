@@ -16,4 +16,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="buttonLabel">#FFFFFF</color>
     <color name="text_edit_background">#24262C</color>
+    <color name="hint_text_color">#75FFFFFF</color>
 </resources>
