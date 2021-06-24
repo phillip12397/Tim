@@ -78,8 +78,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.153"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/textView3"/>
 
             <EditText
                 android:id="@+id/editTextPassword"
@@ -95,8 +94,7 @@
                 android:textColorHint="@color/hint_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"/>
 
             <TextView
                 android:id="@+id/textView3"

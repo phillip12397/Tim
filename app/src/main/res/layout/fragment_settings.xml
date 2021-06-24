@@ -7,286 +7,299 @@
     android:background="@color/background"
     tools:context=".ui.settings.SettingsFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutProfile"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="9dp"
-        android:background="@drawable/login_frame_background"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/text_profile_header"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/profile_settings_headline_text"
-            android:textColor="@color/text_color_dark_mode"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="5dp"
-            android:src="@mipmap/ic_launcher" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/firstNameEntry"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayoutProfile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:text="Tim"
-                android:hint="First name..."
-                android:textAlignment="textEnd"
-                android:textColorHint="@color/hint_text_color"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
+                android:layout_margin="10dp"
+                android:background="@drawable/login_frame_background"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/firstNameLabel"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/text_profile_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/profile_settings_headline_text"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:textSize="20sp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="5dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/userNameEntry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="enter new username..."
+                        android:text="Tim"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/userNameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Username:"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/emailEntry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="enter new email..."
+                        android:text="test@gmail.com"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/emailLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="E-mail:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/newPasswordEntry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:inputType="textPassword"
+                        android:hint="enter new password..."
+                        android:textColorHint="@color/hint_text_color"
+                        android:text=""
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/newPasswordLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Password:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutSettings"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="Firstname:"
-                android:textAlignment="textStart"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
+                android:layout_margin="10dp"
+                android:background="@drawable/login_frame_background"
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/settingsHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/app_settings_text"
+                    android:textColor="@color/text_color_dark_mode"
+                    android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/lastNameEntry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:text="Struppi"
-                android:hint="Last name..."
-                android:textAlignment="textEnd"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
+                    <Switch
+                        android:id="@+id/darkModeSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-            <TextView
-                android:id="@+id/lastNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Lastname:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/darkModeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_horizontal"
+                        android:text="Darkmode:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
+                </RelativeLayout>
 
-            <EditText
-                android:id="@+id/emailEntry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:text="test@gmail.com"
-                android:hint="Your mail..."
-                android:textAlignment="textEnd"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/emailLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="E-mail:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-        </RelativeLayout>
+                    <Switch
+                        android:id="@+id/analyticsSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/analiticsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Google-Analitics:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+                </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="9dp"
-        android:background="@drawable/login_frame_background"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutProfile">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/settingsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/app_settings_text"
-            android:textColor="@color/text_color_dark_mode"
-            android:textSize="20sp" />
+                    <Spinner
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/languageLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Language:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+                </RelativeLayout>
 
-            <Switch
-                android:id="@+id/darkModeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/entry_frame_background"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/darkModeLabel"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Darkmode:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
+                    <Spinner
+                        android:id="@+id/currencySpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
-
-            <Switch
-                android:id="@+id/analyticsSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            <TextView
-                android:id="@+id/analiticsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Google-Analitics:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/languageLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Language:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/entry_frame_background"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/currencySpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/currencyLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Currency:"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="14dp" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/currencyLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Currency:"
+                        android:textColor="@color/text_color_dark_mode"
+                        android:textSize="14dp" />
+                </RelativeLayout>
 
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/logout_button_text"
-        android:height="60dp"
-        android:backgroundTint="@color/text_button_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="60dp">
+
+                <Button
+                    android:id="@+id/updateUserButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:height="60dp"
+                    android:backgroundTint="@color/text_button_blue"
+                    android:text="@string/update_profile" />
+
+                <Button
+                    android:id="@+id/logoutButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:height="60dp"
+                    android:backgroundTint="#FF906D"
+                    android:text="@string/logout_button_text" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
