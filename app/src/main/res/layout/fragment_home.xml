@@ -87,27 +87,8 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/imagebutton_shape"
                     android:src="@drawable/ic_home_cake" />
-                <!--
-                            <ImageButton
-                                android:id="@+id/imageButton6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_margin="10dp"
-                                android:background="@drawable/imagebutton_shape"
-                                android:src="@drawable/ic_home_shopping" />
-                -->
             </LinearLayout>
-<!--
-            <TextView
-                android:id="@+id/homeMoney"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2,180$"
-                android:textAlignment="center"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="22dp" />
--->
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,6 +25,7 @@ import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
+import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
+    private TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,5 +84,10 @@ public class InvestmentsFragment extends Fragment {
 
 
         return root;
+    }
+
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }
