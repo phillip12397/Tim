@@ -64,4 +64,11 @@
         <item>Birthday</item>
         <item>Sport</item>
     </string-array>
+
+    <string-array name="add_asset_names">
+        <item>Btc</item>
+        <item>Eth</item>
+        <item>Matic</item>
+        <item>Doge</item>
+    </string-array>
 </resources>

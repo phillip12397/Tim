@@ -52,6 +52,13 @@ dependencies {
 
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    api 'com.webcerebrium:binance-api:1.0.9'
+
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+
     //Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"

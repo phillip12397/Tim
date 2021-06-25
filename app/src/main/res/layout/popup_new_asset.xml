@@ -1,74 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginHorizontal="12dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="140dp"
-    android:layout_width="380dp"
     android:background="@drawable/popup_frame_background"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/addTransactionClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|right"
-        android:background="@drawable/ic_close"
-        android:layout_alignParentRight="true"/>
+        <ImageButton
+            android:id="@+id/addAssetClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="top|right"
+            android:background="@drawable/ic_close" />
 
-    <Spinner
-        android:id="@+id/assetSpinnerAdd"
-        android:textColor="@color/text_color_dark_mode"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/text_color_dark_mode"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+        <Spinner
+            android:id="@+id/assetSpinner"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/text_color_dark_mode"
+            android:textColor="@color/text_color_dark_mode" />
 
     </RelativeLayout>
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/assetAddStock"
-            android:layout_margin="7dp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="7dp"
-            android:hint="stock:"
-            android:textColor="@color/text_color_dark_mode"
-            android:textColorHint="@color/text_color_dark_mode"
-            android:background="@drawable/short_key_frame_background"/>
-
-        <EditText
-            android:id="@+id/assetAddPrice"
             android:layout_margin="7dp"
+            android:background="@drawable/short_key_frame_background"
+            android:padding="1dp">
+
+            <TextView
+                android:id="@+id/new_asset_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
+                android:text="Stock:"
+                android:textColor="@color/text_color_dark_mode"
+                android:textSize="17dp" />
+
+            <EditText
+                android:id="@+id/assetAddStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:textAlignment="textEnd"
+                android:background="@drawable/short_key_frame_background"
+                android:textColor="@color/text_color_dark_mode"
+                android:textColorHint="@color/text_color_dark_mode" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="7dp"
-            android:hint="Price:"
-            android:textColor="@color/text_color_dark_mode"
-            android:textColorHint="@color/text_color_dark_mode"
-            android:background="@drawable/short_key_frame_background"/>
+            android:layout_margin="7dp"
+            android:orientation="horizontal"
+            android:background="@drawable/short_key_frame_background"
+            android:padding="1dp">
+
+            <TextView
+                android:id="@+id/new_asset_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="Price:"
+                android:textColor="@color/text_color_dark_mode"
+                android:textSize="17dp" />
+
+            <EditText
+                android:id="@+id/assetAddPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:textAlignment="textEnd"
+                android:background="@drawable/short_key_frame_background"
+                android:textColor="@color/text_color_dark_mode"
+                android:textColorHint="@color/text_color_dark_mode" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <Button
-    android:id="@+id/addAssetPopup"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_gravity="bottom"
-    android:text="Add Asset"
-    android:backgroundTint="@color/new_cyan"/>
+        android:id="@+id/addAssetPopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="10dp"
+        android:backgroundTint="@color/new_cyan"
+        android:text="Add Asset" />
 
 </LinearLayout>
