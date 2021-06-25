@@ -48,7 +48,6 @@ public class InvestmentsFragment extends Fragment {
     private IViewModel iViewModel;
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
-    private BinanceApi api;
     private String btc;
     private String eth;
     private String matic;
