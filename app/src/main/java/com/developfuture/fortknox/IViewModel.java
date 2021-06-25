@@ -11,8 +11,8 @@ import com.developfuture.fortknox.ui.investments.Investments;
 import java.util.List;
 
 public class IViewModel extends AndroidViewModel {
-    private Repository repository;
-    private LiveData<List<Investments>> allInvestments;
+    private final Repository repository;
+    private final LiveData<List<Investments>> allInvestments;
 
     public IViewModel(@NonNull Application application) {
         super(application);

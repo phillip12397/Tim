@@ -11,8 +11,8 @@ import com.developfuture.fortknox.ui.home.FinanceTransaction;
 import java.util.List;
 
 public class FTViewModel extends AndroidViewModel {
-    private Repository repository;
-    private LiveData<List<FinanceTransaction>> allFinances;
+    private final Repository repository;
+    private final LiveData<List<FinanceTransaction>> allFinances;
 
     public FTViewModel(@NonNull Application application) {
         super(application);

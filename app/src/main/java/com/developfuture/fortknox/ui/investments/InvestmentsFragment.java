@@ -34,7 +34,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
-    private TransaktionTypes transaktionTypes = new TransaktionTypes();
+    private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class InvestmentsFragment extends Fragment {
 
 
                 spinner = (Spinner) iDialogue.findViewById(R.id.addTransactionSpinner);
-                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, transaktionTypes.getTransactionTypesArrayList());
+                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, TransaktionTypes.getTransactionTypesArrayList());
                 spinner.setAdapter(customAdaptar);
             }
         });

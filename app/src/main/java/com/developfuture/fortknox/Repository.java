@@ -13,10 +13,10 @@ import com.developfuture.fortknox.ui.investments.InvestmentsDao;
 import java.util.List;
 
 public class Repository {
-    private FinanceTransactionDao ftDao;
-    private InvestmentsDao iDao;
-    private LiveData<List<FinanceTransaction>> allFinances;
-    private LiveData<List<Investments>> allInvestments;
+    private final FinanceTransactionDao ftDao;
+    private final InvestmentsDao iDao;
+    private final LiveData<List<FinanceTransaction>> allFinances;
+    private final LiveData<List<Investments>> allInvestments;
 
     public Repository(Application application){
         Database db = Database.getInstance(application);
@@ -67,7 +67,7 @@ public class Repository {
     }
 
     private static class InsertAsyncTask extends AsyncTask<FinanceTransaction, Void, Void> {
-        private FinanceTransactionDao ftDao;
+        private final FinanceTransactionDao ftDao;
 
         private InsertAsyncTask(FinanceTransactionDao ftDao){
             this.ftDao = ftDao;
@@ -81,7 +81,7 @@ public class Repository {
     }
 
     private static class InsertAsyncTaskI extends AsyncTask<Investments, Void, Void> {
-        private InvestmentsDao iDao;
+        private final InvestmentsDao iDao;
 
         private InsertAsyncTaskI(InvestmentsDao iDao){
             this.iDao = iDao;
@@ -95,7 +95,7 @@ public class Repository {
     }
 
     private static class UpdateAsyncTask extends AsyncTask<FinanceTransaction, Void, Void> {
-        private FinanceTransactionDao ftDao;
+        private final FinanceTransactionDao ftDao;
 
         private UpdateAsyncTask(FinanceTransactionDao ftDao){
             this.ftDao = ftDao;
@@ -109,7 +109,7 @@ public class Repository {
     }
 
     private static class UpdateAsyncTaskI extends AsyncTask<Investments, Void, Void> {
-        private InvestmentsDao iDao;
+        private final InvestmentsDao iDao;
 
         private UpdateAsyncTaskI(InvestmentsDao iDao){
             this.iDao = iDao;
@@ -123,7 +123,7 @@ public class Repository {
     }
 
     private static class DeleteAsyncTask extends AsyncTask<FinanceTransaction, Void, Void> {
-        private FinanceTransactionDao ftDao;
+        private final FinanceTransactionDao ftDao;
 
         private DeleteAsyncTask(FinanceTransactionDao ftDao){
             this.ftDao = ftDao;
@@ -137,7 +137,7 @@ public class Repository {
     }
 
     private static class DeleteAsyncTaskI extends AsyncTask<Investments, Void, Void> {
-        private InvestmentsDao iDao;
+        private final InvestmentsDao iDao;
 
         private DeleteAsyncTaskI(InvestmentsDao iDao){
             this.iDao = iDao;
@@ -151,7 +151,7 @@ public class Repository {
     }
 
     private static class DeleteAllNoteAsyncTask extends AsyncTask<Void, Void, Void> {
-        private FinanceTransactionDao ftDao;
+        private final FinanceTransactionDao ftDao;
 
         private DeleteAllNoteAsyncTask(FinanceTransactionDao ftDao){
             this.ftDao = ftDao;
@@ -165,7 +165,7 @@ public class Repository {
     }
 
     private static class DeleteAllNoteAsyncTaskI extends AsyncTask<Void, Void, Void> {
-        private InvestmentsDao iDao;
+        private final InvestmentsDao iDao;
 
         private DeleteAllNoteAsyncTaskI(InvestmentsDao iDao){
             this.iDao = iDao;

@@ -9,9 +9,9 @@ public class FinanceTransaction {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String name;
-    private String date;
-    private String price;
+    private final String name;
+    private final String date;
+    private final String price;
 
     public FinanceTransaction(String name, String date, String price) {
         this.name = name;

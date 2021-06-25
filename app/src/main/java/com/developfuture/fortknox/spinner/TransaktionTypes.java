@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class TransaktionTypes {
 
-    private static ArrayList<Transaction> transactionTypesArrayList = new ArrayList<>();
+    private static final ArrayList<Transaction> transactionTypesArrayList = new ArrayList<>();
 
     private String id;
     private String name;

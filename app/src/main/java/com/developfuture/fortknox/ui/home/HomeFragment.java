@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private HomeViewModel homeViewModel;
     private FTViewModel ftViewModel;
     private Spinner spinner;
-    private TransaktionTypes transaktionTypes = new TransaktionTypes();
+    private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private onFragmentBtnSelected listener;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
 
                 spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
-                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, transaktionTypes.getTransactionTypesArrayList());
+                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, TransaktionTypes.getTransactionTypesArrayList());
                 spinner.setAdapter(customAdaptar);
 
 //                // Create an ArrayAdapter using the string array and a default spinner layout
@@ -291,7 +291,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
     public interface onFragmentBtnSelected {
-        public void onButtonSelected();
+        void onButtonSelected();
     }
 
     public void onResume() {

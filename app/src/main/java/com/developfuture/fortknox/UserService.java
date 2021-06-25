@@ -21,7 +21,7 @@ import static android.content.ContentValues.TAG;
 public class UserService {
 
     private FirebaseAuth mAuth;
-    private FirebaseUser user = mAuth.getCurrentUser();
+    private final FirebaseUser user = mAuth.getCurrentUser();
 
     private void signIn(String email, String password, Activity activity, View view) {
         // [START sign_in_with_email]
