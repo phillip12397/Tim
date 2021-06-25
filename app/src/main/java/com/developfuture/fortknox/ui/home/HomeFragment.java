@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                         String date = addDate.getText().toString();
                         String price = addPrice.getText().toString() + "$";
 
-                        if(name.isEmpty() || date.isEmpty() || price.isEmpty()){
+                        if(name.isEmpty() || date.isEmpty() || price.equals("$")){
                             Toast.makeText(getContext(),"Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
