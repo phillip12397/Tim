@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,7 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
 import com.developfuture.fortknox.R;
-
+import com.developfuture.fortknox.spinner.SpinnerAdapter;
+import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -44,6 +46,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
+    private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
     private BinanceApi api;
     private String btc;
@@ -228,5 +231,10 @@ public class InvestmentsFragment extends Fragment {
                 System.out.println("Exception throwing: " + e.getMessage());
             }
         }
+    }
+
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

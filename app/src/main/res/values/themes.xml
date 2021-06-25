@@ -23,4 +23,5 @@
     <style name="Theme.FortKnox.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FortKnox.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

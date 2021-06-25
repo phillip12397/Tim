@@ -31,4 +31,5 @@ limitations under the License. -->
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
     </style>
+
 </resources>

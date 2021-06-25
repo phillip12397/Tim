@@ -9,9 +9,9 @@ public class Investments {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String asset;
-    private String stock;
-    private String price;
+    private final String asset;
+    private final String stock;
+    private final String price;
 
     public Investments(String asset, String stock, String price) {
         this.asset = asset;

@@ -16,16 +16,4 @@
             android:title="@string/menu_settings" />
     </group>
 
-    <item
-        android:title=""
-        android:id="@+id/logoutMenu">
-        <menu>
-            <item
-                android:id="@+id/remove_logout_button_title"
-                android:title=""
-                app:actionLayout="@layout/nav_footer_main"
-                app:showAsAction="ifRoom" />
-        </menu>
-    </item>
-
 </menu>

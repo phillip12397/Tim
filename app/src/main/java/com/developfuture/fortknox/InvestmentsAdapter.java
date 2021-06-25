@@ -48,9 +48,9 @@ public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.
     }
 
     public class InvestmentsHolder extends RecyclerView.ViewHolder {
-        private TextView asset;
-        private TextView stock;
-        private TextView price;
+        private final TextView asset;
+        private final TextView stock;
+        private final TextView price;
 
         public InvestmentsHolder(View itemView){
             super(itemView);

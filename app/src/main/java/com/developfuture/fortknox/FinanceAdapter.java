@@ -47,9 +47,9 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.FinanceH
     }
 
     class FinanceHolder extends RecyclerView.ViewHolder{
-        private TextView financeName;
-        private TextView financeDate;
-        private TextView financePrice;
+        private final TextView financeName;
+        private final TextView financeDate;
+        private final TextView financePrice;
 
         public FinanceHolder(View itemView){
             super(itemView);
