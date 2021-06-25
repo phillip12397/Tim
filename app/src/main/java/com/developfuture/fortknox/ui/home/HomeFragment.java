@@ -94,7 +94,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 fbDialogue.setCanceledOnTouchOutside(true);
                 fbDialogue.show();
 
-
                 final EditText addDate = fbDialogue.findViewById(R.id.addTransactionDate);
                 final EditText addPrice = fbDialogue.findViewById(R.id.addTransactionPrice);
                 addPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
