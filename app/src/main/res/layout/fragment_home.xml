@@ -13,12 +13,11 @@
 
         <LinearLayout
             android:id="@+id/header_view"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="12dp"
             android:layout_height="140dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
             android:background="@drawable/login_frame_background"
             android:orientation="vertical"
             android:padding="20dp"
@@ -87,27 +86,8 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/imagebutton_shape"
                     android:src="@drawable/ic_home_cake" />
-                <!--
-                            <ImageButton
-                                android:id="@+id/imageButton6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_margin="10dp"
-                                android:background="@drawable/imagebutton_shape"
-                                android:src="@drawable/ic_home_shopping" />
-                -->
             </LinearLayout>
-<!--
-            <TextView
-                android:id="@+id/homeMoney"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2,180$"
-                android:textAlignment="center"
-                android:textColor="@color/text_color_dark_mode"
-                android:textSize="22dp" />
--->
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -115,7 +95,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:padding="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

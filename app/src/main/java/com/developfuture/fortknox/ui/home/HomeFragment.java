@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private HomeViewModel homeViewModel;
     private FTViewModel ftViewModel;
     private Spinner spinner;
-    private TransaktionTypes transaktionTypes = new TransaktionTypes();
+    private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private onFragmentBtnSelected listener;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
 
                 spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
-                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, transaktionTypes.getTransactionTypesArrayList());
+                SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, TransaktionTypes.getTransactionTypesArrayList());
                 spinner.setAdapter(customAdaptar);
 
 //                // Create an ArrayAdapter using the string array and a default spinner layout
@@ -131,7 +132,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                         String date = addDate.getText().toString();
                         String price = addPrice.getText().toString() + "$";
 
-                        if(name.isEmpty() || date.isEmpty() || price.isEmpty()){
+                        if(name.isEmpty() || date.isEmpty() || price.equals("$")){
                             Toast.makeText(getContext(),"Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
@@ -290,6 +291,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
     public interface onFragmentBtnSelected {
-        public void onButtonSelected();
+        void onButtonSelected();
+    }
+
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

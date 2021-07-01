@@ -4,11 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,9 +23,12 @@ import android.widget.TextView;
 import com.developfuture.fortknox.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,6 +41,7 @@ public class LoginFragment extends Fragment {
     private View root = null;
     private LoginViewModel loginViewModel;
     private FirebaseAuth mAuth;
+    private Snackbar mySnackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +82,15 @@ public class LoginFragment extends Fragment {
                 String mail = emailEntry.getText().toString();
                 String password = passwordEntry.getText().toString();
 
-                signIn(mail, password);
+                if(isEmailPasswordNotEmpty(mail, password)) {
+                    signIn(mail, password);
+                }
+                else {
+                    mySnackbar = Snackbar.make(root, "email and password may not be empty to login.", 4000);
+                    mySnackbar.show();
+                }
+
+
             }
         });
 
@@ -102,6 +116,10 @@ public class LoginFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private boolean isEmailPasswordNotEmpty(String email, String password) {
+        return !TextUtils.isEmpty(password) && !TextUtils.isEmpty(email);
     }
 
     private void signIn(String email, String password) {
@@ -154,4 +172,10 @@ public class LoginFragment extends Fragment {
     private void reload() { }
 
     private void updateUI(FirebaseUser user) { }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
 }

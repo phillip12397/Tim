@@ -29,8 +29,8 @@ public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.
     public void onBindViewHolder(@NonNull  InvestmentsAdapter.InvestmentsHolder holder, int position) {
         Investments inv = invs.get(position);
         holder.asset.setText(inv.getAsset());
-        holder.stock.setText(inv.getStock());
-        holder.price.setText(inv.getPrice());
+        holder.stock.setText(String.valueOf(inv.getStock()));
+        holder.price.setText(String.valueOf(inv.getPrice()));
     }
 
     @Override
@@ -48,9 +48,9 @@ public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.
     }
 
     public class InvestmentsHolder extends RecyclerView.ViewHolder {
-        private TextView asset;
-        private TextView stock;
-        private TextView price;
+        private final TextView asset;
+        private final TextView stock;
+        private final TextView price;
 
         public InvestmentsHolder(View itemView){
             super(itemView);

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class LegalNotificationViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public LegalNotificationViewModel() {
         mText = new MutableLiveData<>();
