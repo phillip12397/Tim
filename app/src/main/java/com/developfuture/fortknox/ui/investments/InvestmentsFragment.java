@@ -235,19 +235,32 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Investments inv;
 
                         switch (parent.getSelectedItem().toString()) {
                             case "Btc":
                                 addPrice.setText(btc);
+                                inv = iAdapter.getIdByAsset("Btc");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
                                 break;
                             case "Eth":
                                 addPrice.setText(eth);
+                                inv = iAdapter.getIdByAsset("Eth");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
                                 break;
                             case "Matic":
                                 addPrice.setText(matic);
+                                inv = iAdapter.getIdByAsset("Matic");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
                                 break;
                             case "Doge":
                                 addPrice.setText(doge);
+                                inv = iAdapter.getIdByAsset("Doge");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
                                 break;
                             default:
                                 addPrice.setText("ungültiger Asset");
@@ -265,8 +278,10 @@ public class InvestmentsFragment extends Fragment {
                 addPopupAsset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String crypto = spinner.getSelectedItem().toString();
                         double stockToSell = Double.parseDouble(addStock.getText().toString());
+                        Investments inv  = iAdapter.getIdByAsset(crypto);
 
                         if (crypto.isEmpty() || stockToSell == 0) {
                             Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
@@ -277,14 +292,28 @@ public class InvestmentsFragment extends Fragment {
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
-                                System.out.println("Kann nicht gelöscht werden, da es noch nicht existiert");
+                                Toast.makeText(getContext(), "Kann nicht gelöscht werden, da es nicht vorhanden ist.", Toast.LENGTH_SHORT).show();
                             } else {
+
+                                assert inv != null;
+
+                                if(inv.getStock() > stockToSell){
+                                    double newStock = inv.getStock() - stockToSell;
+                                    Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
+                                    investment.setId(inv.getId());
+                                    iViewModel.update(investment);
+                                } else if(inv.getStock() == stockToSell) {
+                                    iViewModel.delete(inv);
+                                } else {
+                                    Toast.makeText(getContext(), "Sie haben nicht genug Stock um dies zu tun. ", Toast.LENGTH_SHORT).show();
+                                }
+                                /*
                                 iViewModel.delete(ft);
                                 double oldStock = iViewModel.getAllInvestments().getValue().stream()
                                         .filter(investments -> investments.getAsset().equals(crypto)).collect(Collectors.toList()).get(0).getStock();
                                 double newStock = oldStock - stockToSell;
                                 Investments newInvestment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
-                                iViewModel.insert(newInvestment);
+                                iViewModel.insert(newInvestment);*/
                             }
 
                             iDialogue.dismiss();
