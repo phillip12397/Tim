@@ -16,7 +16,7 @@
     <string name="button_save">Speichern</string>
     <string name="hint_word">Gib dein Text hier ein</string>
     <string name="add_word">add word</string>
-    <string name="noAccount">You do not have an account ?</string>
+    <string name="noAccount">You do not have an account?</string>
     <string name="loginButtonText">Login</string>
     <string name="passwordHint">Password:</string>
     <string name="mailHint">E-Mail:</string>
@@ -24,8 +24,8 @@
     <string name="repeadPasswordHint">Repead Password:</string>
     <string name="loginBtnText">Login</string>
     <string name="registerHeadlineText">Register</string>
-    <string name="tertiaryToLoginText">You have an account ?</string>
-    <string name="tertiaryToRegisterText">You do not have an account ?</string>
+    <string name="tertiaryToLoginText">You have an account?</string>
+    <string name="tertiaryToRegisterText">You need an account?</string>
     <string name="titleFortKnox">Fort Knox</string>
     <string name="registerBtnText">Register</string>
     <string name="title_activity_main2">MainActivity</string>
