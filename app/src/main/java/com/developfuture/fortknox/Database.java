@@ -13,7 +13,7 @@ import com.developfuture.fortknox.ui.home.FinanceTransactionDao;
 import com.developfuture.fortknox.ui.investments.Investments;
 import com.developfuture.fortknox.ui.investments.InvestmentsDao;
 
-@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class}, version = 2)
+@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class}, version = 3)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;

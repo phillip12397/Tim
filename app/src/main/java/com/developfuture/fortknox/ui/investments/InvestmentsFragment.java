@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,13 @@ import com.squareup.okhttp.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class InvestmentsFragment extends Fragment {
 
@@ -44,10 +51,12 @@ public class InvestmentsFragment extends Fragment {
     private IViewModel iViewModel;
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
+    private TextView textViewHomeMoney;
     private String btc;
     private String eth;
     private String matic;
     private String doge;
+    private List<Investments> investmentsList = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,14 +70,18 @@ public class InvestmentsFragment extends Fragment {
         InvestmentsAdapter adapter = new InvestmentsAdapter();
         recyclerView.setAdapter(adapter);
 
-        GetCryptoPrice response = new GetCryptoPrice("https://www.binance.com/api/v1/ticker/24hr?symbol=BTCEUR", "BTC");
-        response.start();
-        response = new GetCryptoPrice("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
-        response.start();
-        response = new GetCryptoPrice("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
-        response.start();
-        response = new GetCryptoPrice("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
-        response.start();
+        textViewHomeMoney = root.findViewById(R.id.homeMoney);
+
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=BTCEUR", "BTC");
+                runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
+                runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
+                runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
+            }
+        }, 0, 10, TimeUnit.SECONDS);
 
         iViewModel = new ViewModelProvider(this).get(IViewModel.class);
         iViewModel.getAllInvestments().observe(getViewLifecycleOwner(), new Observer<List<Investments>>() {
@@ -76,6 +89,14 @@ public class InvestmentsFragment extends Fragment {
             public void onChanged(List<Investments> invs) {
                 //update RecyclerView
                 adapter.setFinances(invs);
+
+                investmentsList = iViewModel.getAllInvestments().getValue();
+                double sum = 0;
+
+                for (Investments investment : investmentsList){
+                    sum += investment.getPrice();
+                }
+                textViewHomeMoney.setText(String.valueOf(sum));
             }
         });
 
@@ -108,6 +129,23 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        switch (parent.getSelectedItem().toString()) {
+                            case "Btc":
+                                addPrice.setText(btc);
+                                break;
+                            case "Eth":
+                                addPrice.setText(eth);
+                                break;
+                            case "Matic":
+                                addPrice.setText(matic);
+                                break;
+                            case "Doge":
+                                addPrice.setText(doge);
+                                break;
+                            default:
+                                addPrice.setText("ungültiger Asset");
+                        }
                     }
 
                     @Override
@@ -135,15 +173,26 @@ public class InvestmentsFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         String crypto = spinner.getSelectedItem().toString();
-                        String stock = addStock.getText().toString();
+                        double stock = Double.parseDouble(addStock.getText().toString());
                         String price = addPrice.getText().toString() + "$";
 
-                        if(crypto.isEmpty() || stock.isEmpty() || price.equals("$")){
-                            Toast.makeText(getContext(),"Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
+                        if (crypto.isEmpty() || stock == 0 || price.equals("$")) {
+                            Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
-                            Investments ft = new Investments(crypto, stock, price);
-                            iViewModel.insert(ft);
+                            double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
+
+                            List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
+                            Investments ft = new Investments(crypto, stock, priceForAssets);
+
+                            assert investmentsList != null;
+                            if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
+                                iViewModel.insert(ft);
+                            } else {
+                                //TODO update funktioniert noch nicht
+                                iViewModel.update(ft);
+                            }
+
                             iDialogue.dismiss();
                         }
                     }
@@ -171,65 +220,124 @@ public class InvestmentsFragment extends Fragment {
                     }
                 });
 
+                EditText addStock = iDialogue.findViewById(R.id.assetSellStock);
+                EditText addPrice = iDialogue.findViewById(R.id.assetSellPrice);
+
+                spinner = iDialogue.findViewById(R.id.assetSpinner);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                        R.array.add_asset_names, android.R.layout.simple_spinner_item);
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        switch (parent.getSelectedItem().toString()) {
+                            case "Btc":
+                                addPrice.setText(btc);
+                                break;
+                            case "Eth":
+                                addPrice.setText(eth);
+                                break;
+                            case "Matic":
+                                addPrice.setText(matic);
+                                break;
+                            case "Doge":
+                                addPrice.setText(doge);
+                                break;
+                            default:
+                                addPrice.setText("ungültiger Asset");
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                final Button addPopupAsset = iDialogue.findViewById(R.id.sellAssetPopup);
+
+                addPopupAsset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String crypto = spinner.getSelectedItem().toString();
+                        double stockToSell = Double.parseDouble(addStock.getText().toString());
+
+                        if (crypto.isEmpty() || stockToSell == 0) {
+                            Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
+                            Investments ft = new Investments(crypto, stockToSell, 0);
+
+                            assert investmentsList != null;
+                            if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
+                                System.out.println("Kann nicht gelöscht werden, da es noch nicht existiert");
+                            } else {
+                                iViewModel.delete(ft);
+                                double oldStock = iViewModel.getAllInvestments().getValue().stream()
+                                        .filter(investments -> investments.getAsset().equals(crypto)).collect(Collectors.toList()).get(0).getStock();
+                                double newStock = oldStock - stockToSell;
+                                Investments newInvestment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
+                                iViewModel.insert(newInvestment);
+                            }
+
+                            iDialogue.dismiss();
+                        }
+                    }
+                });
             }
         });
 
         return root;
     }
 
-    //gibt dir den Aktuellen Crypto Preis aus von der Url die man übergeben hat
-    class GetCryptoPrice extends Thread {
-        String url;
-        String crypto;
+    private void runQuery(String url, String crypto) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+            Response responses = null;
 
-        public GetCryptoPrice(String url, String crypto) {
-            this.url = url;
-            this.crypto = crypto;
-        }
-
-        @Override
-        public void run() {
             try {
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder()
-                        .url(url)
-                        .build();
-                Response responses = null;
-
-                try {
-                    responses = client.newCall(request).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                assert responses != null;
-                String jsonData = responses.body().string();
-
-                JSONObject Jobject = new JSONObject(jsonData);
-                switch(crypto) {
-
-                    case "BTC":
-                        btc = Jobject.getString("lastPrice"); break;
-                    case "ETH":
-                        eth = Jobject.getString("lastPrice"); break;
-                    case "MATIC":
-                        matic = Jobject.getString("lastPrice"); break;
-                    case "DOGE":
-                        doge = Jobject.getString("lastPrice"); break;
-                    default:
-                        System.out.println("looool"); break;
-                }
-
-                System.out.println(Jobject.getString("lastPrice"));
-
-            } catch (Exception e) {
-                System.out.println("Exception throwing: " + e.getMessage());
+                responses = client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            assert responses != null;
+            String jsonData = responses.body().string();
+
+            JSONObject Jobject = new JSONObject(jsonData);
+            switch (crypto) {
+
+                case "BTC":
+                    btc = Jobject.getString("lastPrice");
+                    break;
+                case "ETH":
+                    eth = Jobject.getString("lastPrice");
+                    break;
+                case "MATIC":
+                    matic = Jobject.getString("lastPrice");
+                    break;
+                case "DOGE":
+                    doge = Jobject.getString("lastPrice");
+                    break;
+                default:
+                    System.out.println("looool");
+                    break;
+            }
+
+            System.out.println(Jobject.getString("lastPrice"));
+
+        } catch (Exception e) {
+            System.out.println("Exception throwing: " + e.getMessage());
         }
     }
 
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 }
