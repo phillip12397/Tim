@@ -64,6 +64,7 @@ public class LoginFragment extends Fragment {
 
         // Go to register button
         final TextView tertiaryRegisterButton = root.findViewById(R.id.tertiaryLoginButton);
+        final TextView forgotPasswordButton = root.findViewById(R.id.forgotPassword);
 
         // Register and data protection buttons
         final TextView tertiaryLegalButton = root.findViewById(R.id.legalLoginText);
@@ -86,7 +87,7 @@ public class LoginFragment extends Fragment {
                     signIn(mail, password);
                 }
                 else {
-                    mySnackbar = Snackbar.make(root, "email and password may not be empty to login.", 4000);
+                    mySnackbar = Snackbar.make(root, "Email and password may not be empty to login.", 4000);
                     mySnackbar.show();
                 }
 
@@ -112,6 +113,22 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(root).navigate(R.id.navigateLoginToPrivacy);
+            }
+        });
+
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mail = emailEntry.getText().toString();
+
+                if(!TextUtils.isEmpty(mail)) {
+                    resetPassword(mail);
+                }
+                else {
+                    mySnackbar = Snackbar.make(root, "Please fill the email entry.", 4000);
+                    mySnackbar.show();
+                }
+
             }
         });
 
@@ -146,19 +163,25 @@ public class LoginFragment extends Fragment {
         // [END sign_in_with_email]
     }
 
-    private void sendEmailVerification() {
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+    private void resetPassword(String email) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // Email sent
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email hase been sent.");
+                            mySnackbar = Snackbar.make(root, "Email hase been sent.", 4000);
+                            mySnackbar.show();
+                        }
+                        else {
+                            Log.d(TAG, "Sorry, we have a problem.");
+                            mySnackbar = Snackbar.make(root, "Sorry, we have a problem.", 4000);
+                            mySnackbar.show();
+                        }
                     }
                 });
-        // [END send_email_verification]
     }
+
     @Override
     public void onStart() {
         super.onStart();
