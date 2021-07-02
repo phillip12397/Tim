@@ -67,8 +67,8 @@ public class InvestmentsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        InvestmentsAdapter adapter = new InvestmentsAdapter();
-        recyclerView.setAdapter(adapter);
+        InvestmentsAdapter iAdapter = new InvestmentsAdapter();
+        recyclerView.setAdapter(iAdapter);
 
         textViewHomeMoney = root.findViewById(R.id.homeMoney);
 
@@ -88,7 +88,7 @@ public class InvestmentsFragment extends Fragment {
             @Override
             public void onChanged(List<Investments> invs) {
                 //update RecyclerView
-                adapter.setFinances(invs);
+                iAdapter.setFinances(invs);
 
                 investmentsList = iViewModel.getAllInvestments().getValue();
                 double sum = 0;
@@ -176,6 +176,8 @@ public class InvestmentsFragment extends Fragment {
                         double stock = Double.parseDouble(addStock.getText().toString());
                         String price = addPrice.getText().toString() + "$";
 
+                        Investments inv = iAdapter.getIdByAsset(crypto);
+
                         if (crypto.isEmpty() || stock == 0 || price.equals("$")) {
                             Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
@@ -189,10 +191,13 @@ public class InvestmentsFragment extends Fragment {
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
                                 iViewModel.insert(ft);
                             } else {
-                                //TODO update funktioniert noch nicht
-                                iViewModel.update(ft);
+                                if(inv != null) {
+                                    ft.setStock(ft.getStock() + inv.getStock());
+                                    ft.setPrice(ft.getPrice() + inv.getPrice());
+                                    ft.setId(inv.getId());
+                                    iViewModel.update(ft);
+                                }
                             }
-
                             iDialogue.dismiss();
                         }
                     }

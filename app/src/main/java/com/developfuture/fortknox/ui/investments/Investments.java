@@ -10,8 +10,8 @@ public class Investments {
     private int id;
 
     private final String asset;
-    private final double stock;
-    private final double price;
+    private double stock;
+    private double price;
 
     public Investments(String asset, double stock, double price) {
         this.asset = asset;
@@ -35,7 +35,15 @@ public class Investments {
         return stock;
     }
 
+    public void setStock(double stock){
+        this.stock = stock;
+    }
+
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
     }
 }
