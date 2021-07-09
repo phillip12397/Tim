@@ -83,15 +83,12 @@ public class LoginFragment extends Fragment {
                 String mail = emailEntry.getText().toString();
                 String password = passwordEntry.getText().toString();
 
-                if(isEmailPasswordNotEmpty(mail, password)) {
+                if (isEmailPasswordNotEmpty(mail, password)) {
                     signIn(mail, password);
-                }
-                else {
+                } else {
                     mySnackbar = Snackbar.make(root, "Email and password may not be empty to login.", 4000);
                     mySnackbar.show();
                 }
-
-
             }
         });
 
@@ -121,14 +118,12 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 String mail = emailEntry.getText().toString();
 
-                if(!TextUtils.isEmpty(mail)) {
+                if (!TextUtils.isEmpty(mail)) {
                     resetPassword(mail);
-                }
-                else {
+                } else {
                     mySnackbar = Snackbar.make(root, "Please fill the email entry.", 4000);
                     mySnackbar.show();
                 }
-
             }
         });
 
@@ -172,8 +167,7 @@ public class LoginFragment extends Fragment {
                             Log.d(TAG, "Email hase been sent.");
                             mySnackbar = Snackbar.make(root, "Email hase been sent.", 4000);
                             mySnackbar.show();
-                        }
-                        else {
+                        } else {
                             Log.d(TAG, "Sorry, we have a problem.");
                             mySnackbar = Snackbar.make(root, "Sorry, we have a problem.", 4000);
                             mySnackbar.show();
@@ -187,18 +181,20 @@ public class LoginFragment extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             reload();
         }
     }
 
-    private void reload() { }
+    private void reload() {
+    }
 
-    private void updateUI(FirebaseUser user) { }
+    private void updateUI(FirebaseUser user) {
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 }

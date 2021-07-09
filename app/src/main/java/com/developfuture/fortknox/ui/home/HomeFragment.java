@@ -31,7 +31,6 @@ import com.developfuture.fortknox.FTViewModel;
 import com.developfuture.fortknox.FinanceAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
-import com.developfuture.fortknox.spinner.Transaction;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -103,13 +102,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 spinner = (Spinner) fbDialogue.findViewById(R.id.addTransactionSpinner);
                 SpinnerAdapter customAdaptar = new SpinnerAdapter(getContext(), R.layout.custom_spinner_item, TransaktionTypes.getTransactionTypesArrayList());
                 spinner.setAdapter(customAdaptar);
-
-//                // Create an ArrayAdapter using the string array and a default spinner layout
-//                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.add_transaction_names, android.R.layout.simple_spinner_item);
-//                // Specify the layout to use when the list of choices appears
-//                adapter.setDropDownViewResource(R.layout.custom_spinner_item);
-//                // Apply the adapter to the spinner
-//                spinner.setAdapter(adapter);
 
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
