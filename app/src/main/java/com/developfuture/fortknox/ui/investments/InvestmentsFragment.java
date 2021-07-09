@@ -29,6 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
 import com.developfuture.fortknox.R;
+import com.developfuture.fortknox.spinner.InvestmentTypes;
+import com.developfuture.fortknox.spinner.SpinnerAdapter;
+import com.developfuture.fortknox.spinner.SpinnerAdapterInvestmants;
+import com.developfuture.fortknox.spinner.Transaction;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -38,7 +42,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -49,7 +52,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
-    private final TransaktionTypes transaktionTypes = new TransaktionTypes();
+    private final InvestmentTypes investmentTypes = new InvestmentTypes();
     private Spinner spinner;
     private TextView textViewHomeMoney;
     private String btc;
@@ -122,15 +125,46 @@ public class InvestmentsFragment extends Fragment {
                 EditText addStock = iDialogue.findViewById(R.id.assetAddStock);
                 EditText addPrice = iDialogue.findViewById(R.id.assetAddPrice);
 
+//                spinner = iDialogue.findViewById(R.id.assetSpinner);
+//                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.add_asset_names, android.R.layout.simple_spinner_item);
+//                spinner.setAdapter(adapter);
+//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                        switch (parent.getSelectedItem().toString()) {
+//                            case "Btc":
+//                                addPrice.setText(btc);
+//                                break;
+//                            case "Eth":
+//                                addPrice.setText(eth);
+//                                break;
+//                            case "Matic":
+//                                addPrice.setText(matic);
+//                                break;
+//                            case "Doge":
+//                                addPrice.setText(doge);
+//                                break;
+//                            default:
+//                                addPrice.setText("ungültiger Asset");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
+
                 spinner = iDialogue.findViewById(R.id.assetSpinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.add_asset_names, android.R.layout.simple_spinner_item);
-                spinner.setAdapter(adapter);
+                SpinnerAdapterInvestmants customAdaptar = new SpinnerAdapterInvestmants(getContext(), R.layout.investments_custom_spinner_item, InvestmentTypes.getInvestmantTypesArrayList());
+                spinner.setAdapter(customAdaptar);
+
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        switch (parent.getSelectedItem().toString()) {
+                        switch (investmentTypes.getNameById(spinner.getSelectedItemPosition())) {
                             case "Btc":
                                 addPrice.setText(btc);
                                 break;
@@ -153,11 +187,6 @@ public class InvestmentsFragment extends Fragment {
 
                     }
                 });
-/*
-                spinner = (Spinner) iDialogue.findViewById(R.id.addTransactionSpinner);
-                ArrayAdapter customAdaptar = new ArrayAdapter(getContext(), R.layout.custom_spinner_item, android.R.layout.add_ass);
-                spinner.setAdapter(customAdaptar);
-*/
                 final ImageButton closeButton = iDialogue.findViewById(R.id.addAssetClose);
 
                 closeButton.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +201,8 @@ public class InvestmentsFragment extends Fragment {
                 addPopupAsset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String crypto = spinner.getSelectedItem().toString();
+                        String crypto = investmentTypes.getNameById(spinner.getSelectedItemPosition());
+                        //String crypto = spinner.getSelectedItem().toString();
                         double stock = Double.parseDouble(addStock.getText().toString());
                         String price = addPrice.getText().toString() + "$";
 
@@ -224,14 +254,13 @@ public class InvestmentsFragment extends Fragment {
                 EditText addPrice = iDialogue.findViewById(R.id.assetSellPrice);
 
                 spinner = iDialogue.findViewById(R.id.assetSpinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.add_asset_names, android.R.layout.simple_spinner_item);
-                spinner.setAdapter(adapter);
+                SpinnerAdapterInvestmants customAdaptar = new SpinnerAdapterInvestmants(getContext(), R.layout.investments_custom_spinner_item, InvestmentTypes.getInvestmantTypesArrayList());
+                spinner.setAdapter(customAdaptar);
+
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        switch (parent.getSelectedItem().toString()) {
+                        switch (investmentTypes.getNameById(spinner.getSelectedItemPosition())) {
                             case "Btc":
                                 addPrice.setText(btc);
                                 break;
@@ -260,7 +289,7 @@ public class InvestmentsFragment extends Fragment {
                 addPopupAsset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String crypto = spinner.getSelectedItem().toString();
+                        String crypto = investmentTypes.getNameById(spinner.getSelectedItemPosition());
                         double stockToSell = Double.parseDouble(addStock.getText().toString());
 
                         if (crypto.isEmpty() || stockToSell == 0) {

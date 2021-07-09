@@ -87,7 +87,6 @@ public class RegisterFragment extends Fragment {
                     mySnackbar = Snackbar.make(root, "email and password may not be empty to register.", 4000);
                     mySnackbar.show();
                 }
-
             }
         });
 
