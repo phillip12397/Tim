@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,10 +29,7 @@ import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.InvestmentTypes;
-import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.SpinnerAdapterInvestmants;
-import com.developfuture.fortknox.spinner.Transaction;
-import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -125,38 +121,6 @@ public class InvestmentsFragment extends Fragment {
                 EditText addStock = iDialogue.findViewById(R.id.assetAddStock);
                 EditText addPrice = iDialogue.findViewById(R.id.assetAddPrice);
 
-//                spinner = iDialogue.findViewById(R.id.assetSpinner);
-//                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-//                        R.array.add_asset_names, android.R.layout.simple_spinner_item);
-//                spinner.setAdapter(adapter);
-//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                        switch (parent.getSelectedItem().toString()) {
-//                            case "Btc":
-//                                addPrice.setText(btc);
-//                                break;
-//                            case "Eth":
-//                                addPrice.setText(eth);
-//                                break;
-//                            case "Matic":
-//                                addPrice.setText(matic);
-//                                break;
-//                            case "Doge":
-//                                addPrice.setText(doge);
-//                                break;
-//                            default:
-//                                addPrice.setText("ungültiger Asset");
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-
                 spinner = iDialogue.findViewById(R.id.assetSpinner);
                 SpinnerAdapterInvestmants customAdaptar = new SpinnerAdapterInvestmants(getContext(), R.layout.investments_custom_spinner_item, InvestmentTypes.getInvestmantTypesArrayList());
                 spinner.setAdapter(customAdaptar);
@@ -164,22 +128,7 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        switch (investmentTypes.getNameById(spinner.getSelectedItemPosition())) {
-                            case "Btc":
-                                addPrice.setText(btc);
-                                break;
-                            case "Eth":
-                                addPrice.setText(eth);
-                                break;
-                            case "Matic":
-                                addPrice.setText(matic);
-                                break;
-                            case "Doge":
-                                addPrice.setText(doge);
-                                break;
-                            default:
-                                addPrice.setText("ungültiger Asset");
-                        }
+                        setSelectedAsset(addPrice, investmentTypes.getNameById(spinner.getSelectedItemPosition()));
                     }
 
                     @Override
@@ -260,22 +209,7 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        switch (investmentTypes.getNameById(spinner.getSelectedItemPosition())) {
-                            case "Btc":
-                                addPrice.setText(btc);
-                                break;
-                            case "Eth":
-                                addPrice.setText(eth);
-                                break;
-                            case "Matic":
-                                addPrice.setText(matic);
-                                break;
-                            case "Doge":
-                                addPrice.setText(doge);
-                                break;
-                            default:
-                                addPrice.setText("ungültiger Asset");
-                        }
+                        setSelectedAsset(addPrice, investmentTypes.getNameById(spinner.getSelectedItemPosition()));
                     }
 
                     @Override
@@ -362,6 +296,25 @@ public class InvestmentsFragment extends Fragment {
 
         } catch (Exception e) {
             System.out.println("Exception throwing: " + e.getMessage());
+        }
+    }
+
+    public void setSelectedAsset(EditText addPrice, String selectedItemName) {
+        switch (selectedItemName) {
+            case "Btc":
+                addPrice.setText(btc);
+                break;
+            case "Eth":
+                addPrice.setText(eth);
+                break;
+            case "Matic":
+                addPrice.setText(matic);
+                break;
+            case "Doge":
+                addPrice.setText(doge);
+                break;
+            default:
+                addPrice.setText("ungültiger Asset");
         }
     }
 
