@@ -32,11 +32,14 @@ import com.developfuture.fortknox.FinanceAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
+import com.developfuture.fortknox.utiles.regex;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -45,6 +48,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private Spinner spinner;
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private onFragmentBtnSelected listener;
+    private regex regex;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -57,6 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         FinanceAdapter adapter = new FinanceAdapter();
         recyclerView.setAdapter(adapter);
 
+        regex = new regex();
         ftViewModel = new ViewModelProvider(this).get(FTViewModel.class);
         ftViewModel.getAllFinances().observe(getViewLifecycleOwner(), new Observer<List<FinanceTransaction>>() {
             @Override
@@ -95,7 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
                 final EditText addDate = fbDialogue.findViewById(R.id.addTransactionDate);
                 final EditText addPrice = fbDialogue.findViewById(R.id.addTransactionPrice);
-                addPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
+                addPrice.setInputType(InputType.TYPE_CLASS_PHONE);
                 final Button addTransaction = fbDialogue.findViewById(R.id.shortkeyAdd);
 
 
@@ -121,16 +126,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                     public void onClick(View v) {
                         String name = transaktionTypes.getNameById(spinner.getSelectedItemPosition());
                         String date = addDate.getText().toString();
-                        String price = addPrice.getText().toString() + "$";
-
-                        if(name.isEmpty() || date.isEmpty() || price.equals("$")){
-                            Toast.makeText(getContext(),"Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
-                            FinanceTransaction ft = new FinanceTransaction(name, date, price);
-                            ftViewModel.insert(ft);
-                            fbDialogue.dismiss();
-                        }
+                        String price = addPrice.getText().toString();
+                        addNewTransaction(name, date,price, fbDialogue);
                     }
                 });
 
@@ -181,7 +178,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
         final TextView textView = fbDialogue.findViewById(R.id.shortkeyID);
         final EditText editText = fbDialogue.findViewById(R.id.shortkeyIcon);
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
         final Button add =fbDialogue.findViewById(R.id.shortkeyAdd);
         final ImageButton closeButton = fbDialogue.findViewById(R.id.shortkeyClose);
 
@@ -199,12 +196,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 String date = dtf.format(now);
-
+                String price = editText.getText().toString();
                 String name = textView.getText().toString();
-                String price = editText.getText().toString() + "$";
-                FinanceTransaction ft = new FinanceTransaction(name, date, price);
-                ftViewModel.insert(ft);
-                fbDialogue.dismiss();
+                addNewTransaction(name, date,price, fbDialogue);
             }
         });
 
@@ -214,22 +208,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 break;
             case R.id.imageButton2:
                 textView.setText("Games");
-                System.out.println("test2");
                 break;
             case R.id.imageButton3:
                 textView.setText("Gas Station");
-                System.out.println("test3");
                 break;
             case R.id.imageButton4:
                 textView.setText("Party");
-                System.out.println("test4");
                 break;
             case R.id.imageButton5:
                 textView.setText("Birthday");
-                System.out.println("test5");
                 break;
             default:
                 System.out.println("nothing clicked");
+        }
+    }
+
+    private void addNewTransaction(String name, String date, String price, Dialog fbDialogue) {
+        if(name.isEmpty() || date.isEmpty() || price.equals("$")){
+            Toast.makeText(getContext(),"Bitte fülle alle Felder aus.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(!regex.isValidInputValue(price)) {
+            Toast.makeText(getContext(),"Bitte gib einen positiven oder negativen Wert ein. z.B (+5 oder -5)", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            price += "$";
+            FinanceTransaction ft = new FinanceTransaction(name, date, price);
+            ftViewModel.insert(ft);
+            fbDialogue.dismiss();
         }
     }
 
