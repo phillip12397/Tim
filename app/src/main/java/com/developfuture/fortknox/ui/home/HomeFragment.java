@@ -32,6 +32,7 @@ import com.developfuture.fortknox.FinanceAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
+import com.developfuture.fortknox.utiles.regex;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
@@ -47,6 +48,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private Spinner spinner;
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private onFragmentBtnSelected listener;
+    private regex regex;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         FinanceAdapter adapter = new FinanceAdapter();
         recyclerView.setAdapter(adapter);
 
+        regex = new regex();
         ftViewModel = new ViewModelProvider(this).get(FTViewModel.class);
         ftViewModel.getAllFinances().observe(getViewLifecycleOwner(), new Observer<List<FinanceTransaction>>() {
             @Override
@@ -225,7 +228,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             Toast.makeText(getContext(),"Bitte fülle alle Felder aus.", Toast.LENGTH_SHORT).show();
             return;
         }
-        else if(!isValidInputValue(price)) {
+        else if(!regex.isValidInputValue(price)) {
             Toast.makeText(getContext(),"Bitte gib einen positiven oder negativen Wert ein. z.B (+5 oder -5)", Toast.LENGTH_SHORT).show();
             return;
         }else {
@@ -275,18 +278,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 System.out.println("nothing clicked");
         }
         return false;
-    }
-
-    public boolean isValidInputValue(final String value) {
-
-        Pattern pattern;
-        Matcher matcher;
-
-        final String InputValueFormat = "^(\\+|\\-)1?[0-9]\\d*(\\.\\d+)?$";
-
-        pattern = Pattern.compile(InputValueFormat);
-        matcher = pattern.matcher(value);
-        return matcher.matches();
     }
 
     @Override
