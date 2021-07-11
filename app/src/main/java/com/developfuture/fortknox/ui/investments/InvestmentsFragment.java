@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +27,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.developfuture.fortknox.IHViewModel;
 import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
+import com.developfuture.fortknox.InvestmentsHistoryAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.squareup.okhttp.OkHttpClient;
@@ -35,6 +38,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +53,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
+    private IHViewModel ihViewModel;
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
     private TextView textViewHomeMoney;
@@ -57,6 +62,7 @@ public class InvestmentsFragment extends Fragment {
     private String matic;
     private String doge;
     private List<Investments> investmentsList = new ArrayList<>();
+    private List<InvestmentsHistory> investmentsHistoriesList = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +74,27 @@ public class InvestmentsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         InvestmentsAdapter iAdapter = new InvestmentsAdapter();
+        InvestmentsHistoryAdapter ihAdapter = new InvestmentsHistoryAdapter();
         recyclerView.setAdapter(iAdapter);
+
+        RadioGroup radio = (RadioGroup) root.findViewById(R.id.radioGroupBtn);
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.yourAsset:
+                        Toast.makeText(getContext(), "Your Asset", Toast.LENGTH_SHORT).show();
+                        recyclerView.setAdapter(iAdapter);
+                        break;
+                    case R.id.history:
+                        Toast.makeText(getContext(), "History", Toast.LENGTH_SHORT).show();
+                        recyclerView.setAdapter(ihAdapter);
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "Allahu Akbar", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         textViewHomeMoney = root.findViewById(R.id.homeMoney);
 
@@ -95,6 +121,23 @@ public class InvestmentsFragment extends Fragment {
 
                 for (Investments investment : investmentsList){
                     sum += investment.getPrice();
+                }
+                textViewHomeMoney.setText(String.valueOf(sum));
+            }
+        });
+
+        ihViewModel = new ViewModelProvider(this).get(IHViewModel.class);
+        ihViewModel.getAllInvestmentsHistory().observe(getViewLifecycleOwner(), new Observer<List<InvestmentsHistory>>() {
+            @Override
+            public void onChanged(List<InvestmentsHistory> ihs) {
+                //update RecyclerView
+                ihAdapter.setFinances(ihs);
+
+                investmentsHistoriesList = ihViewModel.getAllInvestmentsHistory().getValue();
+                double sum = 0;
+
+                for (InvestmentsHistory investmentsHistory : investmentsHistoriesList){
+                    sum += investmentsHistory.getPrice();
                 }
                 textViewHomeMoney.setText(String.valueOf(sum));
             }
@@ -186,16 +229,22 @@ public class InvestmentsFragment extends Fragment {
 
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
                             Investments ft = new Investments(crypto, stock, priceForAssets);
+                            InvestmentsHistory ih = new InvestmentsHistory(crypto,stock,priceForAssets);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
                                 iViewModel.insert(ft);
+                                ihViewModel.insert(ih);
+
                             } else {
                                 if(inv != null) {
                                     ft.setStock(ft.getStock() + inv.getStock());
                                     ft.setPrice(ft.getPrice() + inv.getPrice());
                                     ft.setId(inv.getId());
                                     iViewModel.update(ft);
+
+                                    ih = new InvestmentsHistory(crypto, stock, priceForAssets);
+                                    ihViewModel.insert(ih);
                                 }
                             }
                             iDialogue.dismiss();
@@ -288,7 +337,6 @@ public class InvestmentsFragment extends Fragment {
                             return;
                         } else {
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
-                            Investments ft = new Investments(crypto, stockToSell, 0);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
@@ -296,24 +344,21 @@ public class InvestmentsFragment extends Fragment {
                             } else {
 
                                 assert inv != null;
+                                double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
+                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto,stockToSell, priceForAssets);
 
                                 if(inv.getStock() > stockToSell){
                                     double newStock = inv.getStock() - stockToSell;
                                     Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
                                     investment.setId(inv.getId());
                                     iViewModel.update(investment);
+                                    ihViewModel.insert(investmentsHistory);
                                 } else if(inv.getStock() == stockToSell) {
                                     iViewModel.delete(inv);
+                                    ihViewModel.insert(investmentsHistory);
                                 } else {
                                     Toast.makeText(getContext(), "Sie haben nicht genug Stock um dies zu tun. ", Toast.LENGTH_SHORT).show();
                                 }
-                                /*
-                                iViewModel.delete(ft);
-                                double oldStock = iViewModel.getAllInvestments().getValue().stream()
-                                        .filter(investments -> investments.getAsset().equals(crypto)).collect(Collectors.toList()).get(0).getStock();
-                                double newStock = oldStock - stockToSell;
-                                Investments newInvestment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
-                                iViewModel.insert(newInvestment);*/
                             }
 
                             iDialogue.dismiss();
