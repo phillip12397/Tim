@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,7 +84,7 @@ public class InvestmentsFragment extends Fragment {
         radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.yourAsset:
                         Toast.makeText(getContext(), "Your Asset", Toast.LENGTH_SHORT).show();
                         recyclerView.setAdapter(iAdapter);
@@ -97,6 +99,8 @@ public class InvestmentsFragment extends Fragment {
             }
         });
 
+        iViewModel = new ViewModelProvider(this).get(IViewModel.class);
+
         textViewHomeMoney = root.findViewById(R.id.homeMoneyInvestment);
         prozent = root.findViewById(R.id.prozent);
 
@@ -104,31 +108,30 @@ public class InvestmentsFragment extends Fragment {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                System.out.println("ich bin drinne");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=BTCEUR", "BTC");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
+                startTimerThread();
+                System.out.println("ich bin wieder raus");
             }
         }, 0, 10, TimeUnit.SECONDS);
 
-        iViewModel = new ViewModelProvider(this).get(IViewModel.class);
         iViewModel.getAllInvestments().observe(getViewLifecycleOwner(), new Observer<List<Investments>>() {
             @Override
             public void onChanged(List<Investments> invs) {
                 //update RecyclerView
                 iAdapter.setFinances(invs);
-
+                DecimalFormat df = new DecimalFormat("#.##");
                 investmentsList = iViewModel.getAllInvestments().getValue();
                 double sum = 0;
 
-                for (Investments investment : investmentsList){
-                    if(investment.getSellOrBuy() == 0){
-                        sum += investment.getPrice();
-                    } else {
-                        sum = sum - investment.getPrice();
-                    }
+                for (Investments investment : investmentsList) {
+                    sum += investment.getPrice();
                 }
-                textViewHomeMoney.setText(String.valueOf(sum));
+                textViewHomeMoney.setText(String.valueOf(df.format(sum)));
+                prozent.setText("0.00%");
             }
         });
 
@@ -207,7 +210,7 @@ public class InvestmentsFragment extends Fragment {
 
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
                             Investments ft = new Investments(crypto, stock, priceForAssets, 0);
-                            InvestmentsHistory ih = new InvestmentsHistory(crypto,stock,priceForAssets, 0);
+                            InvestmentsHistory ih = new InvestmentsHistory(crypto, stock, priceForAssets, 0);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
@@ -215,7 +218,7 @@ public class InvestmentsFragment extends Fragment {
                                 ihViewModel.insert(ih);
 
                             } else {
-                                if(inv != null) {
+                                if (inv != null) {
                                     ft.setStock(ft.getStock() + inv.getStock());
                                     ft.setPrice(ft.getPrice() + inv.getPrice());
                                     ft.setId(inv.getId());
@@ -268,25 +271,25 @@ public class InvestmentsFragment extends Fragment {
                             case "Btc":
                                 addPrice.setText(btc);
                                 inv = iAdapter.getIdByAsset("Btc");
-                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                if (inv != null) addStock.setText(String.valueOf(inv.getStock()));
                                 else addStock.setText("0");
                                 break;
                             case "Eth":
                                 addPrice.setText(eth);
                                 inv = iAdapter.getIdByAsset("Eth");
-                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                if (inv != null) addStock.setText(String.valueOf(inv.getStock()));
                                 else addStock.setText("0");
                                 break;
                             case "Matic":
                                 addPrice.setText(matic);
                                 inv = iAdapter.getIdByAsset("Matic");
-                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                if (inv != null) addStock.setText(String.valueOf(inv.getStock()));
                                 else addStock.setText("0");
                                 break;
                             case "Doge":
                                 addPrice.setText(doge);
                                 inv = iAdapter.getIdByAsset("Doge");
-                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                if (inv != null) addStock.setText(String.valueOf(inv.getStock()));
                                 else addStock.setText("0");
                                 break;
                             default:
@@ -307,7 +310,7 @@ public class InvestmentsFragment extends Fragment {
                     public void onClick(View v) {
                         String crypto = investmentTypes.getNameById(spinner.getSelectedItemPosition());
                         double stockToSell = Double.parseDouble(addStock.getText().toString());
-                        Investments inv  = iAdapter.getIdByAsset(crypto);
+                        Investments inv = iAdapter.getIdByAsset(crypto);
 
                         if (crypto.isEmpty() || stockToSell == 0) {
                             Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
@@ -322,15 +325,15 @@ public class InvestmentsFragment extends Fragment {
 
                                 assert inv != null;
                                 double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
-                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto,stockToSell, priceForAssets, 1);
+                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto, stockToSell, priceForAssets, 1);
 
-                                if(inv.getStock() > stockToSell){
+                                if (inv.getStock() > stockToSell) {
                                     double newStock = inv.getStock() - stockToSell;
-                                    Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()), 1);
+                                    Investments investment = new Investments(crypto, newStock, newStock * Double.parseDouble(addPrice.getText().toString()), 1);
                                     investment.setId(inv.getId());
                                     iViewModel.update(investment);
                                     ihViewModel.insert(investmentsHistory);
-                                } else if(inv.getStock() == stockToSell) {
+                                } else if (inv.getStock() == stockToSell) {
                                     iViewModel.delete(inv);
                                     ihViewModel.insert(investmentsHistory);
                                 } else {
@@ -346,6 +349,68 @@ public class InvestmentsFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void startTimerThread() {
+        try {
+            Thread th = new Thread(new Runnable() {
+                public void run() {
+                    investmentsList = iViewModel.getAllInvestments().getValue();
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                double sum = 0;
+                                double price = 0;
+                                double sumWhenBought = 0;
+
+                                for (Investments investment : investmentsList) {
+                                    switch (investment.getAsset()) {
+                                        case "Btc":
+                                            price = investment.getStock() * Double.parseDouble(btc);
+                                            sumWhenBought += investment.getPrice();
+                                            break;
+                                        case "Eth":
+                                            price = investment.getStock() * Double.parseDouble(eth);
+                                            sumWhenBought += investment.getPrice();
+                                            break;
+                                        case "Matic":
+                                            price = investment.getStock() * Double.parseDouble(matic);
+                                            sumWhenBought += investment.getPrice();
+                                            break;
+                                        case "Doge":
+                                            price = investment.getStock() * Double.parseDouble(doge);
+                                            sumWhenBought += investment.getPrice();
+                                            break;
+                                        default:
+                                            System.out.println("Do Nothing");
+                                    }
+                                    sum += price;
+                                }
+                                double proz = ((sum - sumWhenBought) / sumWhenBought ) * 100;
+
+                                if(proz < 0){
+                                    prozent.setTextColor(Color.parseColor("#FF906D"));
+                                } else {
+                                    prozent.setTextColor(Color.parseColor("#3DBBAA"));
+                                }
+                                if(sumWhenBought == 0) System.out.println("Ich bin null");
+                                DecimalFormat df = new DecimalFormat("#.##");
+                                textViewHomeMoney.setText(String.valueOf(df.format(sum)));
+                                if(sumWhenBought == 0) {
+                                    prozent.setText("0.00%");
+                                } else {
+                                    prozent.setText(String.valueOf(df.format(proz)) + "%");
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            th.start();
+        } catch (Exception e) {
+            System.out.println("Error by updating Current Balance: " + e.getMessage());
+        }
     }
 
     private void runQuery(String url, String crypto) {
