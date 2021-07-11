@@ -87,7 +87,6 @@ public class RegisterFragment extends Fragment {
                     mySnackbar = Snackbar.make(root, "email and password may not be empty to register.", 4000);
                     mySnackbar.show();
                 }
-
             }
         });
 
@@ -149,6 +148,7 @@ public class RegisterFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            sendEmailVerification();
                             updateUI(user);
                             Navigation.findNavController(root).navigate(R.id.navigationRegisterToHome);
                         } else {
