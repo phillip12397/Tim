@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +26,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.developfuture.fortknox.IHViewModel;
 import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
+import com.developfuture.fortknox.InvestmentsHistoryAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.InvestmentTypes;
 import com.developfuture.fortknox.spinner.SpinnerAdapterInvestmants;
@@ -35,6 +38,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +52,7 @@ public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
+    private IHViewModel ihViewModel;
     private final InvestmentTypes investmentTypes = new InvestmentTypes();
     private Spinner spinner;
     private TextView textViewHomeMoney;
@@ -56,6 +61,7 @@ public class InvestmentsFragment extends Fragment {
     private String matic;
     private String doge;
     private List<Investments> investmentsList = new ArrayList<>();
+    private List<InvestmentsHistory> investmentsHistoriesList = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,8 +72,28 @@ public class InvestmentsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        InvestmentsAdapter adapter = new InvestmentsAdapter();
-        recyclerView.setAdapter(adapter);
+        InvestmentsAdapter iAdapter = new InvestmentsAdapter();
+        InvestmentsHistoryAdapter ihAdapter = new InvestmentsHistoryAdapter();
+        recyclerView.setAdapter(iAdapter);
+
+        RadioGroup radio = (RadioGroup) root.findViewById(R.id.radioGroupBtn);
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.yourAsset:
+                        Toast.makeText(getContext(), "Your Asset", Toast.LENGTH_SHORT).show();
+                        recyclerView.setAdapter(iAdapter);
+                        break;
+                    case R.id.history:
+                        Toast.makeText(getContext(), "History", Toast.LENGTH_SHORT).show();
+                        recyclerView.setAdapter(ihAdapter);
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "Allahu Akbar", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         textViewHomeMoney = root.findViewById(R.id.homeMoney);
 
@@ -87,13 +113,30 @@ public class InvestmentsFragment extends Fragment {
             @Override
             public void onChanged(List<Investments> invs) {
                 //update RecyclerView
-                adapter.setFinances(invs);
+                iAdapter.setFinances(invs);
 
                 investmentsList = iViewModel.getAllInvestments().getValue();
                 double sum = 0;
 
                 for (Investments investment : investmentsList){
                     sum += investment.getPrice();
+                }
+                textViewHomeMoney.setText(String.valueOf(sum));
+            }
+        });
+
+        ihViewModel = new ViewModelProvider(this).get(IHViewModel.class);
+        ihViewModel.getAllInvestmentsHistory().observe(getViewLifecycleOwner(), new Observer<List<InvestmentsHistory>>() {
+            @Override
+            public void onChanged(List<InvestmentsHistory> ihs) {
+                //update RecyclerView
+                ihAdapter.setFinances(ihs);
+
+                investmentsHistoriesList = ihViewModel.getAllInvestmentsHistory().getValue();
+                double sum = 0;
+
+                for (InvestmentsHistory investmentsHistory : investmentsHistoriesList){
+                    sum += investmentsHistory.getPrice();
                 }
                 textViewHomeMoney.setText(String.valueOf(sum));
             }
@@ -155,6 +198,8 @@ public class InvestmentsFragment extends Fragment {
                         double stock = Double.parseDouble(addStock.getText().toString());
                         String price = addPrice.getText().toString() + "$";
 
+                        Investments inv = iAdapter.getIdByAsset(crypto);
+
                         if (crypto.isEmpty() || stock == 0 || price.equals("$")) {
                             Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
@@ -163,15 +208,24 @@ public class InvestmentsFragment extends Fragment {
 
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
                             Investments ft = new Investments(crypto, stock, priceForAssets);
+                            InvestmentsHistory ih = new InvestmentsHistory(crypto,stock,priceForAssets);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
                                 iViewModel.insert(ft);
-                            } else {
-                                //TODO update funktioniert noch nicht
-                                iViewModel.update(ft);
-                            }
+                                ihViewModel.insert(ih);
 
+                            } else {
+                                if(inv != null) {
+                                    ft.setStock(ft.getStock() + inv.getStock());
+                                    ft.setPrice(ft.getPrice() + inv.getPrice());
+                                    ft.setId(inv.getId());
+                                    iViewModel.update(ft);
+
+                                    ih = new InvestmentsHistory(crypto, stock, priceForAssets);
+                                    ihViewModel.insert(ih);
+                                }
+                            }
                             iDialogue.dismiss();
                         }
                     }
@@ -209,7 +263,36 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        setSelectedAsset(addPrice, investmentTypes.getNameById(spinner.getSelectedItemPosition()));
+                        Investments inv;
+
+                        switch (investmentTypes.getNameById(spinner.getSelectedItemPosition())) {
+                            case "Btc":
+                                addPrice.setText(btc);
+                                inv = iAdapter.getIdByAsset("Btc");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
+                                break;
+                            case "Eth":
+                                addPrice.setText(eth);
+                                inv = iAdapter.getIdByAsset("Eth");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
+                                break;
+                            case "Matic":
+                                addPrice.setText(matic);
+                                inv = iAdapter.getIdByAsset("Matic");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
+                                break;
+                            case "Doge":
+                                addPrice.setText(doge);
+                                inv = iAdapter.getIdByAsset("Doge");
+                                if(inv != null) addStock.setText(String.valueOf(inv.getStock()));
+                                else addStock.setText("0");
+                                break;
+                            default:
+                                addPrice.setText("ungültiger Asset");
+                        }
                     }
 
                     @Override
@@ -225,24 +308,35 @@ public class InvestmentsFragment extends Fragment {
                     public void onClick(View v) {
                         String crypto = investmentTypes.getNameById(spinner.getSelectedItemPosition());
                         double stockToSell = Double.parseDouble(addStock.getText().toString());
+                        Investments inv  = iAdapter.getIdByAsset(crypto);
 
                         if (crypto.isEmpty() || stockToSell == 0) {
                             Toast.makeText(getContext(), "Alle Felder müssen ausgefüllt sein", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
-                            Investments ft = new Investments(crypto, stockToSell, 0);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
-                                System.out.println("Kann nicht gelöscht werden, da es noch nicht existiert");
+                                Toast.makeText(getContext(), "Kann nicht gelöscht werden, da es nicht vorhanden ist.", Toast.LENGTH_SHORT).show();
                             } else {
-                                iViewModel.delete(ft);
-                                double oldStock = iViewModel.getAllInvestments().getValue().stream()
-                                        .filter(investments -> investments.getAsset().equals(crypto)).collect(Collectors.toList()).get(0).getStock();
-                                double newStock = oldStock - stockToSell;
-                                Investments newInvestment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
-                                iViewModel.insert(newInvestment);
+
+                                assert inv != null;
+                                double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
+                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto,stockToSell, priceForAssets);
+
+                                if(inv.getStock() > stockToSell){
+                                    double newStock = inv.getStock() - stockToSell;
+                                    Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
+                                    investment.setId(inv.getId());
+                                    iViewModel.update(investment);
+                                    ihViewModel.insert(investmentsHistory);
+                                } else if(inv.getStock() == stockToSell) {
+                                    iViewModel.delete(inv);
+                                    ihViewModel.insert(investmentsHistory);
+                                } else {
+                                    Toast.makeText(getContext(), "Sie haben nicht genug Stock um dies zu tun. ", Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                             iDialogue.dismiss();

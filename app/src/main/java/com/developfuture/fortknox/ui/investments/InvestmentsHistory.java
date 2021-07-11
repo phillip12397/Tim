@@ -3,9 +3,8 @@ package com.developfuture.fortknox.ui.investments;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "investments_table")
-public class Investments {
-
+@Entity(tableName = "investments_history_table")
+public class InvestmentsHistory {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -13,7 +12,7 @@ public class Investments {
     private double stock;
     private double price;
 
-    public Investments(String asset, double stock, double price) {
+    public InvestmentsHistory(String asset, double stock, double price) {
         this.asset = asset;
         this.stock = stock;
         this.price = price;
@@ -35,15 +34,8 @@ public class Investments {
         return stock;
     }
 
-    public void setStock(double stock){
-        this.stock = stock;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price){
-        this.price = price;
-    }
 }

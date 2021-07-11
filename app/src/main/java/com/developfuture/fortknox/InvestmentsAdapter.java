@@ -47,6 +47,16 @@ public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.
         return invs.get(position);
     }
 
+    public Investments getIdByAsset(String asset){
+        int id;
+        for(int i = 0; i < invs.size(); i++){
+            if (invs.get(i).getAsset().equals(asset)){
+                return invs.get(i);
+            }
+        }
+        return null;
+    }
+
     public class InvestmentsHolder extends RecyclerView.ViewHolder {
         private final TextView asset;
         private final TextView stock;
