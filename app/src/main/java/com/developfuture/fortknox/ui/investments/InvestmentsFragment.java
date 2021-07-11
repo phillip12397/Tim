@@ -42,6 +42,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -60,6 +61,7 @@ public class InvestmentsFragment extends Fragment {
     private String eth;
     private String matic;
     private String doge;
+    private TextView prozent;
     private List<Investments> investmentsList = new ArrayList<>();
     private List<InvestmentsHistory> investmentsHistoriesList = new ArrayList<>();
 
@@ -95,7 +97,8 @@ public class InvestmentsFragment extends Fragment {
             }
         });
 
-        textViewHomeMoney = root.findViewById(R.id.homeMoney);
+        textViewHomeMoney = root.findViewById(R.id.homeMoneyInvestment);
+        prozent = root.findViewById(R.id.prozent);
 
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable() {
@@ -119,7 +122,11 @@ public class InvestmentsFragment extends Fragment {
                 double sum = 0;
 
                 for (Investments investment : investmentsList){
-                    sum += investment.getPrice();
+                    if(investment.getSellOrBuy() == 0){
+                        sum += investment.getPrice();
+                    } else {
+                        sum = sum - investment.getPrice();
+                    }
                 }
                 textViewHomeMoney.setText(String.valueOf(sum));
             }
@@ -131,14 +138,6 @@ public class InvestmentsFragment extends Fragment {
             public void onChanged(List<InvestmentsHistory> ihs) {
                 //update RecyclerView
                 ihAdapter.setFinances(ihs);
-
-                investmentsHistoriesList = ihViewModel.getAllInvestmentsHistory().getValue();
-                double sum = 0;
-
-                for (InvestmentsHistory investmentsHistory : investmentsHistoriesList){
-                    sum += investmentsHistory.getPrice();
-                }
-                textViewHomeMoney.setText(String.valueOf(sum));
             }
         });
 
@@ -207,8 +206,8 @@ public class InvestmentsFragment extends Fragment {
                             double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
 
                             List<Investments> investmentsList = iViewModel.getAllInvestments().getValue();
-                            Investments ft = new Investments(crypto, stock, priceForAssets);
-                            InvestmentsHistory ih = new InvestmentsHistory(crypto,stock,priceForAssets);
+                            Investments ft = new Investments(crypto, stock, priceForAssets, 0);
+                            InvestmentsHistory ih = new InvestmentsHistory(crypto,stock,priceForAssets, 0);
 
                             assert investmentsList != null;
                             if (investmentsList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
@@ -222,7 +221,7 @@ public class InvestmentsFragment extends Fragment {
                                     ft.setId(inv.getId());
                                     iViewModel.update(ft);
 
-                                    ih = new InvestmentsHistory(crypto, stock, priceForAssets);
+                                    ih = new InvestmentsHistory(crypto, stock, priceForAssets, 0);
                                     ihViewModel.insert(ih);
                                 }
                             }
@@ -323,11 +322,11 @@ public class InvestmentsFragment extends Fragment {
 
                                 assert inv != null;
                                 double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
-                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto,stockToSell, priceForAssets);
+                                InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto,stockToSell, priceForAssets, 1);
 
                                 if(inv.getStock() > stockToSell){
                                     double newStock = inv.getStock() - stockToSell;
-                                    Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()));
+                                    Investments investment = new Investments(crypto, newStock, newStock*Double.parseDouble(addPrice.getText().toString()), 1);
                                     investment.setId(inv.getId());
                                     iViewModel.update(investment);
                                     ihViewModel.insert(investmentsHistory);

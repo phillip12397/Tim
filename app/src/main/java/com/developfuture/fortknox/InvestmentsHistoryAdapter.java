@@ -1,6 +1,7 @@
 package com.developfuture.fortknox;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,13 @@ public class InvestmentsHistoryAdapter extends RecyclerView.Adapter<InvestmentsH
         InvestmentsHistory ih = ihs.get(position);
         holder.asset.setText(ih.getAsset());
         holder.stock.setText(String.valueOf(ih.getStock()));
-        holder.price.setText(String.valueOf(ih.getPrice()));
+        if(ih.getSellOrBuy() == 0 ) {
+            holder.price.setTextColor(Color.GREEN);
+            holder.price.setText(String.valueOf(ih.getPrice()));
+        } else {
+            holder.price.setTextColor(Color.RED);
+            holder.price.setText(String.valueOf(ih.getPrice()));
+        }
     }
 
     @Override

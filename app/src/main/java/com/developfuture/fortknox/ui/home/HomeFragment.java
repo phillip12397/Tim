@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         final TextView textView = fbDialogue.findViewById(R.id.shortkeyID);
         final EditText editText = fbDialogue.findViewById(R.id.shortkeyIcon);
         editText.setInputType(InputType.TYPE_CLASS_PHONE);
-        final Button add =fbDialogue.findViewById(R.id.shortkeyAdd);
+        final Button add = fbDialogue.findViewById(R.id.shortkeyAdd);
         final ImageButton closeButton = fbDialogue.findViewById(R.id.shortkeyClose);
 
         closeButton.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.developfuture.fortknox;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.FinanceHolder> {
@@ -29,7 +31,15 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.FinanceH
         FinanceTransaction ft = fts.get(position);
         holder.financeName.setText(ft.getName());
         holder.financeDate.setText(ft.getDate());
-        holder.financePrice.setText(ft.getPrice());
+        String[] sellOrBuy = ft.getPrice().split("(?<=-|\\+)");
+        System.out.println(sellOrBuy[0]);
+        if(sellOrBuy[0].equals("-")){
+            holder.financePrice.setTextColor(Color.RED);
+            holder.financePrice.setText(ft.getPrice());
+        } else {
+            holder.financePrice.setTextColor(Color.GREEN);
+            holder.financePrice.setText(ft.getPrice());
+        }
     }
 
     @Override
