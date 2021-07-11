@@ -11,11 +11,13 @@ public class InvestmentsHistory {
     private final String asset;
     private double stock;
     private double price;
+    private int sellOrBuy;
 
-    public InvestmentsHistory(String asset, double stock, double price) {
+    public InvestmentsHistory(String asset, double stock, double price, int sellOrBuy) {
         this.asset = asset;
         this.stock = stock;
         this.price = price;
+        this.sellOrBuy = sellOrBuy;
     }
 
     public void setId(int id) {
@@ -32,6 +34,10 @@ public class InvestmentsHistory {
 
     public double getStock() {
         return stock;
+    }
+
+    public int getSellOrBuy() {
+        return sellOrBuy;
     }
 
     public double getPrice() {

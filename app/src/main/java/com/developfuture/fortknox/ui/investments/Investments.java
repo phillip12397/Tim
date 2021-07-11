@@ -12,11 +12,13 @@ public class Investments {
     private final String asset;
     private double stock;
     private double price;
+    private int sellOrBuy;
 
-    public Investments(String asset, double stock, double price) {
+    public Investments(String asset, double stock, double price, int sellOrBuy) {
         this.asset = asset;
         this.stock = stock;
         this.price = price;
+        this.sellOrBuy = sellOrBuy;
     }
 
     public void setId(int id) {
@@ -39,6 +41,9 @@ public class Investments {
         this.stock = stock;
     }
 
+    public int getSellOrBuy() {
+        return sellOrBuy;
+    }
     public double getPrice() {
         return price;
     }

@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/homeMoney"
+                        android:id="@+id/homeMoneyInvestment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2180$"
