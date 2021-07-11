@@ -34,10 +34,10 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.FinanceH
         String[] sellOrBuy = ft.getPrice().split("(?<=-|\\+)");
         System.out.println(sellOrBuy[0]);
         if(sellOrBuy[0].equals("-")){
-            holder.financePrice.setTextColor(Color.RED);
+            holder.financePrice.setTextColor(Color.parseColor("#FF906D"));
             holder.financePrice.setText(ft.getPrice());
         } else {
-            holder.financePrice.setTextColor(Color.GREEN);
+            holder.financePrice.setTextColor(Color.parseColor("#3DBBAA"));
             holder.financePrice.setText(ft.getPrice());
         }
     }

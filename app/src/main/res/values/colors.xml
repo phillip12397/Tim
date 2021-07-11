@@ -9,8 +9,8 @@
     <color name="text_color_dark_mode">#F5F5F5</color>
     <color name="background_frames">#1A1B21</color>
     <color name="text_button_blue">#3D95F5</color>
-    <color name="green">#008000</color>
-    <color name="red">#ff0000</color>
+    <color name="green">#3DBBAA</color>
+    <color name="red">#FF906D</color>
     <color name="gray">#7D8491</color>
 
     <color name="colorPrimary">#3F51B5</color>
