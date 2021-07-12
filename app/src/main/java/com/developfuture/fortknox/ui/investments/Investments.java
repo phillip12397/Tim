@@ -44,6 +44,7 @@ public class Investments {
     public int getSellOrBuy() {
         return sellOrBuy;
     }
+
     public double getPrice() {
         return price;
     }
