@@ -125,7 +125,8 @@ public class RegisterFragment extends Fragment {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            signIn(email, password);
+                            sendEmailVerification();
+                            Navigation.findNavController(root).navigate(R.id.navigationRegisterToHome);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -136,31 +137,6 @@ public class RegisterFragment extends Fragment {
                     }
                 });
         // [END create_user_with_email]
-    }
-
-    private void signIn(String email, String password) {
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            sendEmailVerification();
-                            updateUI(user);
-                            Navigation.findNavController(root).navigate(R.id.navigationRegisterToHome);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-        // [END sign_in_with_email]
     }
 
     private boolean isEmailPasswordNotEmpty(String email, String password) {

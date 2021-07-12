@@ -167,8 +167,8 @@ public class InvestmentsFragment extends Fragment {
                 EditText addPrice = iDialogue.findViewById(R.id.assetAddPrice);
 
                 spinner = iDialogue.findViewById(R.id.assetSpinner);
-                SpinnerAdapterInvestmants customAdaptar = new SpinnerAdapterInvestmants(getContext(), R.layout.investments_custom_spinner_item, InvestmentTypes.getInvestmantTypesArrayList());
-                spinner.setAdapter(customAdaptar);
+                SpinnerAdapterInvestmants customAdapter = new SpinnerAdapterInvestmants(getContext(), R.layout.investments_custom_spinner_item, InvestmentTypes.getInvestmantTypesArrayList());
+                spinner.setAdapter(customAdapter);
 
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

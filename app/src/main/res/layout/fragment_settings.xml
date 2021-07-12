@@ -12,18 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/scrollContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/linearLayoutProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="9dp"
                 android:background="@drawable/login_frame_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/text_profile_header"
@@ -122,12 +127,12 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
-                        android:inputType="textPassword"
                         android:hint="enter new password..."
-                        android:textColorHint="@color/hint_text_color"
+                        android:inputType="textPassword"
                         android:text=""
                         android:textAlignment="textEnd"
                         android:textColor="@color/text_color_dark_mode"
+                        android:textColorHint="@color/hint_text_color"
                         android:textSize="14dp" />
 
                     <TextView
@@ -143,163 +148,166 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayoutSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/login_frame_background"
-                android:orientation="vertical">
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linearLayoutSettings"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="10dp"-->
+            <!--                android:background="@drawable/login_frame_background"-->
+            <!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/settingsHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/app_settings_text"
-                    android:textColor="@color/text_color_dark_mode"
-                    android:textSize="20sp" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/settingsHeader"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:text="@string/app_settings_text"-->
+            <!--                    android:textColor="@color/text_color_dark_mode"-->
+            <!--                    android:textSize="20sp" />-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/entry_frame_background"
-                    android:orientation="horizontal">
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:background="@drawable/entry_frame_background"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <Switch
-                        android:id="@+id/darkModeSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+            <!--                    <Switch-->
+            <!--                        android:id="@+id/darkModeSwitch"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentEnd="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        tools:ignore="UseSwitchCompatOrMaterialXml" />-->
 
-                    <TextView
-                        android:id="@+id/darkModeLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_horizontal"
-                        android:text="Darkmode:"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/darkModeLabel"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentStart="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:gravity="center_horizontal"-->
+            <!--                        android:text="Darkmode:"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
 
-                </RelativeLayout>
+            <!--                </RelativeLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/entry_frame_background"
-                    android:orientation="horizontal">
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:background="@drawable/entry_frame_background"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <Switch
-                        android:id="@+id/analyticsSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+            <!--                    <Switch-->
+            <!--                        android:id="@+id/analyticsSwitch"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentEnd="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        tools:ignore="UseSwitchCompatOrMaterialXml" />-->
 
-                    <TextView
-                        android:id="@+id/analiticsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="Google-Analitics:"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
-                </RelativeLayout>
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/analiticsLabel"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentStart="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:text="Google-Analitics:"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
+            <!--                </RelativeLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/entry_frame_background"
-                    android:orientation="horizontal">
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:background="@drawable/entry_frame_background"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <Spinner
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
+            <!--                    <Spinner-->
+            <!--                        android:id="@+id/textView8"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentEnd="true"-->
+            <!--                        android:background="@null"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
 
-                    <TextView
-                        android:id="@+id/languageLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="Language:"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
-                </RelativeLayout>
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/languageLabel"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentStart="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:text="Language:"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
+            <!--                </RelativeLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/entry_frame_background"
-                    android:orientation="horizontal">
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:background="@drawable/entry_frame_background"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <Spinner
-                        android:id="@+id/currencySpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
+            <!--                    <Spinner-->
+            <!--                        android:id="@+id/currencySpinner"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentEnd="true"-->
+            <!--                        android:background="@null"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
 
-                    <TextView
-                        android:id="@+id/currencyLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="Currency:"
-                        android:textColor="@color/text_color_dark_mode"
-                        android:textSize="14dp" />
-                </RelativeLayout>
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/currencyLabel"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentStart="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:text="Currency:"-->
+            <!--                        android:textColor="@color/text_color_dark_mode"-->
+            <!--                        android:textSize="14dp" />-->
+            <!--                </RelativeLayout>-->
 
 
-            </LinearLayout>
+            <!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginTop="60dp">
-
-                <Button
-                    android:id="@+id/updateUserButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:height="60dp"
-                    android:backgroundTint="@color/text_button_blue"
-                    android:text="@string/update_profile" />
-
-                <Button
-                    android:id="@+id/logoutButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:height="60dp"
-                    android:backgroundTint="#FF906D"
-                    android:text="@string/logout_button_text" />
-            </LinearLayout>
-
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/updateUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:height="60dp"
+            android:backgroundTint="@color/text_button_blue"
+            android:text="@string/update_profile" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:height="60dp"
+            android:backgroundTint="#FF906D"
+            android:text="@string/logout_button_text" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
