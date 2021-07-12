@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.developfuture.fortknox.ui.investments.Investments;
 import com.developfuture.fortknox.ui.investments.InvestmentsHistory;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InvestmentsHistoryAdapter extends RecyclerView.Adapter<InvestmentsHistoryAdapter.InvestmentsHistoryHolder> {
     private List<InvestmentsHistory> ihs = new ArrayList<>();
+    private FirebaseUser user;
 
     @Override
     public InvestmentsHistoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_item, parent, false);
         return new InvestmentsHistoryHolder(itemView);
@@ -32,12 +36,12 @@ public class InvestmentsHistoryAdapter extends RecyclerView.Adapter<InvestmentsH
         InvestmentsHistory ih = ihs.get(position);
         holder.asset.setText(ih.getAsset());
         holder.stock.setText(String.valueOf(ih.getStock()));
-        if(ih.getSellOrBuy() == 0 ) {
+        if (ih.getSellOrBuy() == 0) {
             holder.price.setTextColor(Color.parseColor("#3DBBAA"));
-            holder.price.setText(String.valueOf(ih.getPrice()));
+            holder.price.setText(String.valueOf(ih.getPrice()) + "€");
         } else {
             holder.price.setTextColor(Color.parseColor("#FF906D"));
-            holder.price.setText(String.valueOf(ih.getPrice()));
+            holder.price.setText(String.valueOf(ih.getPrice()) + "€");
         }
     }
 
