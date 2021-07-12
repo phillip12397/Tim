@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -52,10 +54,10 @@ public class InvestmentsFragment extends Fragment {
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private Spinner spinner;
     private TextView textViewHomeMoney;
-    private String btc;
-    private String eth;
-    private String matic;
-    private String doge;
+    private Double btc;
+    private Double eth;
+    private Double matic;
+    private Double doge;
     private List<Investments> investmentsList = new ArrayList<>();
 
     @SuppressLint("CheckResult")
@@ -80,6 +82,9 @@ public class InvestmentsFragment extends Fragment {
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
+
+                updateInvestmentPrices();
+
             }
         }, 0, 10, TimeUnit.SECONDS);
 
@@ -132,16 +137,16 @@ public class InvestmentsFragment extends Fragment {
 
                         switch (parent.getSelectedItem().toString()) {
                             case "Btc":
-                                addPrice.setText(btc);
+                                addPrice.setText(btc.toString());
                                 break;
                             case "Eth":
-                                addPrice.setText(eth);
+                                addPrice.setText(eth.toString());
                                 break;
                             case "Matic":
-                                addPrice.setText(matic);
+                                addPrice.setText(matic.toString());
                                 break;
                             case "Doge":
-                                addPrice.setText(doge);
+                                addPrice.setText(doge.toString());
                                 break;
                             default:
                                 addPrice.setText("ungültiger Asset");
@@ -233,16 +238,16 @@ public class InvestmentsFragment extends Fragment {
 
                         switch (parent.getSelectedItem().toString()) {
                             case "Btc":
-                                addPrice.setText(btc);
+                                addPrice.setText(btc.toString());
                                 break;
                             case "Eth":
-                                addPrice.setText(eth);
+                                addPrice.setText(eth.toString());
                                 break;
                             case "Matic":
-                                addPrice.setText(matic);
+                                addPrice.setText(matic.toString());
                                 break;
                             case "Doge":
-                                addPrice.setText(doge);
+                                addPrice.setText(doge.toString());
                                 break;
                             default:
                                 addPrice.setText("ungültiger Asset");
@@ -292,6 +297,30 @@ public class InvestmentsFragment extends Fragment {
         return root;
     }
 
+    private void updateInvestmentPrices() {
+        List<Investments> investments = iViewModel.getAllInvestments().getValue();
+        for(Investments investment: investments){
+            investment.setPrice(investment.getStock()*getAssetValue(investment.getAsset()));
+            iViewModel.update(investment);
+        }
+    }
+
+    private double getAssetValue(String asset) {
+        switch (asset.toUpperCase()) {
+
+            case "BTC":
+                return btc;
+            case "ETH":
+                return eth;
+            case "MATIC":
+                return matic;
+            case "DOGE":
+                return doge;
+            default:
+                return 0.0;
+        }
+    }
+
     private void runQuery(String url, String crypto) {
         try {
             OkHttpClient client = new OkHttpClient();
@@ -313,16 +342,16 @@ public class InvestmentsFragment extends Fragment {
             switch (crypto) {
 
                 case "BTC":
-                    btc = Jobject.getString("lastPrice");
+                    btc = Double.parseDouble(Jobject.getString("lastPrice"));
                     break;
                 case "ETH":
-                    eth = Jobject.getString("lastPrice");
+                    eth = Double.parseDouble(Jobject.getString("lastPrice"));
                     break;
                 case "MATIC":
-                    matic = Jobject.getString("lastPrice");
+                    matic = Double.parseDouble(Jobject.getString("lastPrice"));
                     break;
                 case "DOGE":
-                    doge = Jobject.getString("lastPrice");
+                    doge = Double.parseDouble(Jobject.getString("lastPrice"));
                     break;
                 default:
                     System.out.println("looool");

@@ -11,7 +11,7 @@ public class Investments {
 
     private final String asset;
     private final double stock;
-    private final double price;
+    private double price;
 
     public Investments(String asset, double stock, double price) {
         this.asset = asset;
@@ -37,5 +37,10 @@ public class Investments {
 
     public double getPrice() {
         return price;
+    }
+
+
+    public void setPrice(double v) {
+        price=v;
     }
 }

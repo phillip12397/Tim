@@ -44,12 +44,15 @@ limitations under the License. -->
 
         <TextView
             android:id="@+id/recyclerView2"
-            android:textColor="@color/text_color_dark_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
             android:text="20.04.2012"
-            android:gravity="center"/>
+            android:textColor="@color/text_color_dark_mode" />
 
     </RelativeLayout>
 
