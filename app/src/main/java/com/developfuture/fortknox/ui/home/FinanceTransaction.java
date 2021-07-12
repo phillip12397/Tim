@@ -12,11 +12,13 @@ public class FinanceTransaction {
     private final String name;
     private final String date;
     private final String price;
+    private String userUID;
 
-    public FinanceTransaction(String name, String date, String price) {
+    public FinanceTransaction(String name, String date, String price, String userUID) {
         this.name = name;
         this.date = date;
         this.price = price;
+        this.userUID = userUID;
     }
 
     public void setId(int id) {
@@ -29,6 +31,10 @@ public class FinanceTransaction {
 
     public String getName() {
         return name;
+    }
+
+    public String getUserUID(){
+        return userUID;
     }
 
     public String getDate() {

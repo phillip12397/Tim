@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.developfuture.fortknox.ui.investments.Investments;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,12 @@ import java.util.List;
 public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.InvestmentsHolder> {
 
     private List<Investments> invs = new ArrayList<>();
+    private FirebaseUser user;
 
     @NonNull
     @Override
     public InvestmentsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_item, parent, false);
         return new InvestmentsHolder((itemView));
@@ -30,7 +34,8 @@ public class InvestmentsAdapter extends RecyclerView.Adapter<InvestmentsAdapter.
         Investments inv = invs.get(position);
         holder.asset.setText(inv.getAsset());
         holder.stock.setText(String.valueOf(inv.getStock()));
-        holder.price.setText(String.valueOf(inv.getPrice()));
+        holder.price.setText(String.valueOf(inv.getPrice()) + "€");
+
     }
 
     @Override
