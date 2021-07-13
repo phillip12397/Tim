@@ -34,12 +34,13 @@ import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.utiles.regex;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -49,10 +50,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private final TransaktionTypes transaktionTypes = new TransaktionTypes();
     private onFragmentBtnSelected listener;
     private regex regex;
+    private FirebaseUser user;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -67,7 +71,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             @Override
             public void onChanged(List<FinanceTransaction> financeTransactions) {
                 //update RecyclerView
-                adapter.setFinances(financeTransactions);
+                List<FinanceTransaction> trueFt = new ArrayList<>();
+
+                for(FinanceTransaction ft : financeTransactions){
+                    if(user.getUid().equals(ft.getUserUID())){
+                        trueFt.add(ft);
+                    }
+                }
+                adapter.setFinances(trueFt);
             }
         });
 
@@ -224,7 +235,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void addNewTransaction(String name, String date, String price, Dialog fbDialogue) {
-        if(name.isEmpty() || date.isEmpty() || price.equals("$")){
+        if(name.isEmpty() || date.isEmpty() || price.equals("€")){
             Toast.makeText(getContext(),"Bitte fülle alle Felder aus.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -232,8 +243,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             Toast.makeText(getContext(),"Bitte gib einen positiven oder negativen Wert ein. z.B (+5 oder -5)", Toast.LENGTH_SHORT).show();
             return;
         }else {
-            price += "$";
-            FinanceTransaction ft = new FinanceTransaction(name, date, price);
+            price += "€";
+            FinanceTransaction ft = new FinanceTransaction(name, date, price, user.getUid());
             ftViewModel.insert(ft);
             fbDialogue.dismiss();
         }

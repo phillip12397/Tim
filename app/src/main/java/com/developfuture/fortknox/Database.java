@@ -15,7 +15,7 @@ import com.developfuture.fortknox.ui.investments.InvestmentsDao;
 import com.developfuture.fortknox.ui.investments.InvestmentsHistory;
 import com.developfuture.fortknox.ui.investments.InvestmentsHistoryDao;
 
-@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class, InvestmentsHistory.class}, version = 7)
+@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class, InvestmentsHistory.class}, version = 9)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
@@ -39,21 +39,6 @@ public abstract class Database extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            //new PopulateDbAsyncTask(instance).execute();
         }
     };
-
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private final FinanceTransactionDao ftDao;
-
-        private PopulateDbAsyncTask(Database db) {
-            ftDao = db.transDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            ftDao.insert(new FinanceTransaction("Einkaufen", "30.04.2019", "+35$"));
-            return null;
-        }
-    }
 }
