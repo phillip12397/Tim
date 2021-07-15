@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -26,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.developfuture.fortknox.FTViewModel;
 import com.developfuture.fortknox.IHViewModel;
 import com.developfuture.fortknox.IViewModel;
 import com.developfuture.fortknox.InvestmentsAdapter;
@@ -33,6 +33,7 @@ import com.developfuture.fortknox.InvestmentsHistoryAdapter;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.InvestmentTypes;
 import com.developfuture.fortknox.spinner.SpinnerAdapterInvestmants;
+import com.developfuture.fortknox.ui.home.FinanceTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.okhttp.OkHttpClient;
@@ -40,23 +41,24 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class InvestmentsFragment extends Fragment {
 
     private InvestmentsViewModel investmentsViewModel;
     private IViewModel iViewModel;
     private IHViewModel ihViewModel;
+    private FTViewModel ftViewModel;
     private final InvestmentTypes investmentTypes = new InvestmentTypes();
     private Spinner spinner;
     private TextView textViewHomeMoney;
@@ -115,6 +117,7 @@ public class InvestmentsFragment extends Fragment {
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
+                updateInvestmentPrices();
                 startTimerThread();
             }
         }, 0, 10, TimeUnit.SECONDS);
@@ -141,6 +144,7 @@ public class InvestmentsFragment extends Fragment {
             }
         });
 
+        ftViewModel = new ViewModelProvider(this).get(FTViewModel.class);
         ihViewModel = new ViewModelProvider(this).get(IHViewModel.class);
         ihViewModel.getAllInvestmentsHistory().observe(getViewLifecycleOwner(), new Observer<List<InvestmentsHistory>>() {
             @Override
@@ -158,11 +162,8 @@ public class InvestmentsFragment extends Fragment {
         });
 
         //final TextView textView = root.findViewById(R.id.text_gallery);
-        investmentsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
+        investmentsViewModel.getText().observe(getViewLifecycleOwner(), s -> {
+            //textView.setText(s);
         });
 
         //Ruft das Popup auf um Assets zu kaufen
@@ -186,7 +187,11 @@ public class InvestmentsFragment extends Fragment {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        setSelectedAsset(addPrice, investmentTypes.getNameById(spinner.getSelectedItemPosition()));
+                        String price = getSelectedAsset(investmentTypes.getNameById(spinner.getSelectedItemPosition()));
+                        if (price == null)
+                            addPrice.setText("ungültiger Asset");
+                        else
+                            addPrice.setText(price);
                     }
 
                     @Override
@@ -232,6 +237,13 @@ public class InvestmentsFragment extends Fragment {
 
                             Investments ft = new Investments(crypto, stock, priceForAssets, 0, user.getUid());
                             InvestmentsHistory ih = new InvestmentsHistory(crypto, stock, priceForAssets, 0, user.getUid());
+
+                            LocalDateTime now = LocalDateTime.now();
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                            String date = dtf.format(now);
+                            double roundedValue = (double)((int)(priceForAssets*stock*100))/100;
+                            FinanceTransaction transaction = new FinanceTransaction("Investiert in " + crypto, date, roundedValue + "€", user.getUid());
+                            ftViewModel.insert(transaction);
 
                             assert trueInvestmentList != null;
                             if (trueInvestmentList.stream().noneMatch(investment -> investment.getAsset().equals(crypto))) {
@@ -348,6 +360,13 @@ public class InvestmentsFragment extends Fragment {
                                 double priceForAssets = Double.parseDouble(addPrice.getText().toString()) * Double.parseDouble(addStock.getText().toString());
                                 InvestmentsHistory investmentsHistory = new InvestmentsHistory(crypto, stockToSell, priceForAssets, 1, user.getUid());
 
+                                LocalDateTime now = LocalDateTime.now();
+                                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                                String date = dtf.format(now);
+                                double roundedValue = (double)((int)(priceForAssets*stockToSell*100))/100;
+                                FinanceTransaction transaction = new FinanceTransaction("Verkauft " + crypto, date, roundedValue + "€", user.getUid());
+                                ftViewModel.insert(transaction);
+
                                 if (inv.getStock() > stockToSell) {
                                     double newStock = inv.getStock() - stockToSell;
                                     Investments investment = new Investments(crypto, newStock, newStock * Double.parseDouble(addPrice.getText().toString()), 1, user.getUid());
@@ -370,6 +389,20 @@ public class InvestmentsFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void updateInvestmentPrices() {
+        List<Investments> investments = iViewModel.getAllInvestments().getValue();
+        for (Investments investment : investmentsList) {
+
+            String value = getSelectedAsset(investment.getAsset());
+            if (value != null) {
+                Double price = Double.parseDouble(value);
+                investment.setPrice(price * investment.getStock());
+                iViewModel.update(investment);
+            }
+        }
+
     }
 
     private void startTimerThread() {
@@ -410,14 +443,14 @@ public class InvestmentsFragment extends Fragment {
                                         sum += price;
                                     }
                                 }
-                                double proz = ((sum - sumWhenBought) / sumWhenBought ) * 100;
+                                double proz = ((sum - sumWhenBought) / sumWhenBought) * 100;
 
-                                if(proz < 0){
+                                if (proz < 0) {
                                     prozent.setTextColor(Color.parseColor("#FF906D"));
                                 } else {
                                     prozent.setTextColor(Color.parseColor("#3DBBAA"));
                                 }
-                                if(sumWhenBought == 0) System.out.println("Ich bin null");
+                                if (sumWhenBought == 0) System.out.println("Ich bin null");
                                 DecimalFormat df = new DecimalFormat("#.##");
                                 textViewHomeMoney.setText(String.valueOf(df.format(sum)) + "€");
                                 if(sumWhenBought == 0) {
@@ -455,7 +488,6 @@ public class InvestmentsFragment extends Fragment {
 
             JSONObject Jobject = new JSONObject(jsonData);
             switch (crypto) {
-
                 case "BTC":
                     btc = Jobject.getString("lastPrice");
                     break;
@@ -472,7 +504,6 @@ public class InvestmentsFragment extends Fragment {
                     System.out.println("looool");
                     break;
             }
-
             System.out.println(Jobject.getString("lastPrice"));
 
         } catch (Exception e) {
@@ -480,22 +511,18 @@ public class InvestmentsFragment extends Fragment {
         }
     }
 
-    public void setSelectedAsset(EditText addPrice, String selectedItemName) {
-        switch (selectedItemName) {
-            case "Btc":
-                addPrice.setText(btc);
-                break;
-            case "Eth":
-                addPrice.setText(eth);
-                break;
-            case "Matic":
-                addPrice.setText(matic);
-                break;
-            case "Doge":
-                addPrice.setText(doge);
-                break;
+    public String getSelectedAsset(String selectedItemName) {
+        switch (selectedItemName.toUpperCase()) {
+            case "BTC":
+                return btc;
+            case "ETH":
+                return eth;
+            case "MATIC":
+                return matic;
+            case "DOGE":
+                return doge;
             default:
-                addPrice.setText("ungültiger Asset");
+                return null;
         }
     }
 
