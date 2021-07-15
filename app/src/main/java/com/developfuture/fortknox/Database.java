@@ -10,18 +10,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
 import com.developfuture.fortknox.ui.home.FinanceTransactionDao;
+import com.developfuture.fortknox.ui.home.IconModel;
+import com.developfuture.fortknox.ui.home.IconModelDao;
 import com.developfuture.fortknox.ui.investments.Investments;
 import com.developfuture.fortknox.ui.investments.InvestmentsDao;
 import com.developfuture.fortknox.ui.investments.InvestmentsHistory;
 import com.developfuture.fortknox.ui.investments.InvestmentsHistoryDao;
 
-@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class, InvestmentsHistory.class}, version = 9)
+@androidx.room.Database(entities = {FinanceTransaction.class, Investments.class, IconModel.class, InvestmentsHistory.class}, version = 10)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
 
     public abstract FinanceTransactionDao transDao();
     public abstract InvestmentsDao iDao();
+    public abstract IconModelDao iconModelDao();
     public abstract InvestmentsHistoryDao ihDao();
 
     public static synchronized Database getInstance(Context context){

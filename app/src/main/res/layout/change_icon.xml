@@ -1,25 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:layout_marginBottom="30dp"
     android:layout_width="350dp"
     android:background="@drawable/login_frame_background"
-    android:layout_height="180dp">
+    android:layout_height="180dp"
+    tools:context=".ui.home.HomeFragment">
 
-    <ImageButton
-        android:id="@+id/shortkeyIcon1"
-        android:tag="1"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/imagebutton_shape"
-        android:src="@drawable/ic_sport"/>
 
     <ImageButton
         android:id="@+id/shortkeyCloseIcons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:background="@drawable/ic_close"/>
+        android:tag="1"
+        android:background="@drawable/ic_close" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_sport"
+        android:tag="2"
+        android:translationY="50dp" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_home_restaurant"
+        android:tag="3"
+        android:translationX="50dp"
+        android:translationY="50dp" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_home_games"
+        android:tag="4"
+        android:translationX="100dp"
+        android:translationY="50dp" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_home_local_gas_station"
+        android:tag="5"
+        android:translationX="150dp"
+        android:translationY="50dp" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_home_party"
+        android:tag="6"
+        android:translationX="200dp"
+        android:translationY="50dp" />
+
+    <ImageButton
+        android:id="@+id/shortkeyIcon6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/imagebutton_shape"
+        android:src="@drawable/ic_home_cake"
+        android:tag="7"
+        android:translationX="250dp"
+        android:translationY="50dp" />
 
 </FrameLayout>
