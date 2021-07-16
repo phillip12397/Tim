@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             for (FinanceTransaction ft : financeTransactions) {
                 if (user.getUid().equals(ft.getUserUID())) {
                     trueFt.add(ft);
-                    price -= Double.parseDouble(ft.getPrice().substring(0, ft.getPrice().length() - 1));
+                    price += Double.parseDouble(ft.getPrice().substring(0, ft.getPrice().length() - 1));
                 }
             }
             double roundedValue = (double)((int)(price*100))/100;
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             adapter.setFinances(trueFt);
         });
 
-        final TextView textView = root.findViewById(R.id.homeMoney);
+        final TextView currentMoneyValue = root.findViewById(R.id.homeMoney);
         // Button shortcuts
         final ImageButton imageButton1 = root.findViewById(R.id.imageButton1);
         final ImageButton imageButton2 = root.findViewById(R.id.imageButton2);
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                currentMoneyValue.setText(s);
             }
         });
 
