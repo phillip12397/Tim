@@ -34,6 +34,7 @@ import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.InvestmentTypes;
 import com.developfuture.fortknox.spinner.SpinnerAdapterInvestmants;
 import com.developfuture.fortknox.ui.home.FinanceTransaction;
+import com.developfuture.fortknox.utiles.utiles;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.okhttp.OkHttpClient;
@@ -70,9 +71,12 @@ public class InvestmentsFragment extends Fragment {
     private List<Investments> investmentsList = new ArrayList<>();
     private List<InvestmentsHistory> investmentsHistoriesList = new ArrayList<>();
     private FirebaseUser user;
+    private utiles utiles;
+
 
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        utiles = new utiles();
         investmentsViewModel = new ViewModelProvider(this).get(InvestmentsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_investments, container, false);
 
@@ -128,7 +132,6 @@ public class InvestmentsFragment extends Fragment {
                 //update RecyclerView
                 List<Investments> trueInv = new ArrayList<>();
 
-                DecimalFormat df = new DecimalFormat("#.##");
                 investmentsList = iViewModel.getAllInvestments().getValue();
                 double sum = 0;
 
@@ -139,7 +142,7 @@ public class InvestmentsFragment extends Fragment {
                     }
                 }
                 iAdapter.setFinances(trueInv);
-                textViewHomeMoney.setText(String.valueOf(df.format(sum)) + "€");
+                textViewHomeMoney.setText(String.valueOf(utiles.df.format(sum)) + "€");
                 prozent.setText("0.00%");
             }
         });

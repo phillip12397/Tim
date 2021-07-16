@@ -41,6 +41,7 @@ import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.utiles.regex;
+import com.developfuture.fortknox.utiles.utiles;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,8 +65,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private FirebaseUser user;
     private IconViewModel iconViewModel;
     private View changeIconActivity;
+    private utiles utiles;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        utiles = new utiles();
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         changeIconActivity = inflater.inflate(R.layout.change_icon, null);
@@ -93,7 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 }
             }
             double roundedValue = (double)((int)(price*100))/100;
-            homeViewModel.setText(roundedValue +"€");
+            homeViewModel.setText(utiles.df.format(roundedValue) +"€");
             adapter.setFinances(trueFt);
         });
 
