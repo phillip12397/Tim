@@ -121,7 +121,6 @@ public class InvestmentsFragment extends Fragment {
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=ETHEUR", "ETH");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=MATICEUR", "MATIC");
                 runQuery("https://www.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR", "DOGE");
-                updateInvestmentPrices();
                 startTimerThread();
             }
         }, 0, 10, TimeUnit.SECONDS);
@@ -394,21 +393,6 @@ public class InvestmentsFragment extends Fragment {
         return root;
     }
 
-    private void updateInvestmentPrices() {
-        List<Investments> investments = iViewModel.getAllInvestments().getValue();
-        for (Investments investment : investmentsList) {
-
-            String value = getSelectedAsset(investment.getAsset());
-            if (value != null) {
-                Double price = Double.parseDouble(value);
-                double roundedValue = (double)((int)(price*100))/100;
-                investment.setPrice(roundedValue);
-                iViewModel.update(investment);
-            }
-        }
-
-    }
-
     private void startTimerThread() {
         try {
             Thread th = new Thread(new Runnable() {
@@ -460,7 +444,7 @@ public class InvestmentsFragment extends Fragment {
                                 if(sumWhenBought == 0) {
                                     prozent.setText("0.00%");
                                 } else {
-                                    prozent.setText(String.valueOf(df.format(proz)) + "%");
+                                    prozent.setText(df.format(proz) + "%");
                                 }
                             }
                         });
