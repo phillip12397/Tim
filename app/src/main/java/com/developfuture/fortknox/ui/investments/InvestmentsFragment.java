@@ -244,7 +244,7 @@ public class InvestmentsFragment extends Fragment {
                             LocalDateTime now = LocalDateTime.now();
                             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                             String date = dtf.format(now);
-                            double roundedValue = (double)((int)(priceForAssets*stock*100))/100;
+                            double roundedValue = (double)((int)(priceForAssets*100))/100;
                             FinanceTransaction transaction = new FinanceTransaction("Investiert in " + crypto, date, "-"+ roundedValue + "€", user.getUid());
                             ftViewModel.insert(transaction);
 
@@ -366,7 +366,7 @@ public class InvestmentsFragment extends Fragment {
                                 LocalDateTime now = LocalDateTime.now();
                                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                                 String date = dtf.format(now);
-                                double roundedValue = (double)((int)(priceForAssets*stockToSell*100))/100;
+                                double roundedValue = (double)((int)(priceForAssets*100))/100;
                                 FinanceTransaction transaction = new FinanceTransaction("Verkauft " + crypto, date, "+" + roundedValue + "€", user.getUid());
                                 ftViewModel.insert(transaction);
 
@@ -401,7 +401,7 @@ public class InvestmentsFragment extends Fragment {
             String value = getSelectedAsset(investment.getAsset());
             if (value != null) {
                 Double price = Double.parseDouble(value);
-                double roundedValue = (double)((int)(price*investment.getStock()*100))/100;
+                double roundedValue = (double)((int)(price*100))/100;
                 investment.setPrice(roundedValue);
                 iViewModel.update(investment);
             }
