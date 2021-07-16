@@ -1,11 +1,16 @@
 package com.developfuture.fortknox.ui.home;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,10 +35,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.developfuture.fortknox.FTViewModel;
 import com.developfuture.fortknox.FinanceAdapter;
+import com.developfuture.fortknox.IViewModel;
+import com.developfuture.fortknox.IconViewModel;
 import com.developfuture.fortknox.R;
 import com.developfuture.fortknox.spinner.SpinnerAdapter;
 import com.developfuture.fortknox.spinner.TransaktionTypes;
 import com.developfuture.fortknox.utiles.regex;
+import com.developfuture.fortknox.utiles.utiles;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +50,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -51,11 +63,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private onFragmentBtnSelected listener;
     private regex regex;
     private FirebaseUser user;
+    private IconViewModel iconViewModel;
+    private View changeIconActivity;
+    private utiles utiles;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        utiles = new utiles();
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        changeIconActivity = inflater.inflate(R.layout.change_icon, null);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
@@ -64,36 +80,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
         FinanceAdapter adapter = new FinanceAdapter();
         recyclerView.setAdapter(adapter);
+        iconViewModel = new ViewModelProvider(this).get(IconViewModel.class);
 
         regex = new regex();
         ftViewModel = new ViewModelProvider(this).get(FTViewModel.class);
-        ftViewModel.getAllFinances().observe(getViewLifecycleOwner(), new Observer<List<FinanceTransaction>>() {
-            @Override
-            public void onChanged(List<FinanceTransaction> financeTransactions) {
-                //update RecyclerView
-                List<FinanceTransaction> trueFt = new ArrayList<>();
+        ftViewModel.getAllFinances().observe(getViewLifecycleOwner(), financeTransactions -> {
+            //update RecyclerView
+            List<FinanceTransaction> trueFt = new ArrayList<>();
 
-                for(FinanceTransaction ft : financeTransactions){
-                    if(user.getUid().equals(ft.getUserUID())){
-                        trueFt.add(ft);
-                    }
+            double price = 0;
+            for (FinanceTransaction ft : financeTransactions) {
+                if (user.getUid().equals(ft.getUserUID())) {
+                    trueFt.add(ft);
+                    price += Double.parseDouble(ft.getPrice().substring(0, ft.getPrice().length() - 1));
                 }
-                adapter.setFinances(trueFt);
             }
+            double roundedValue = (double)((int)(price*100))/100;
+            homeViewModel.setText(utiles.df.format(roundedValue) +"€");
+            adapter.setFinances(trueFt);
         });
 
-        final TextView textView = root.findViewById(R.id.homeMoney);
+        final TextView currentMoneyValue = root.findViewById(R.id.homeMoney);
         // Button shortcuts
         final ImageButton imageButton1 = root.findViewById(R.id.imageButton1);
         final ImageButton imageButton2 = root.findViewById(R.id.imageButton2);
         final ImageButton imageButton3 = root.findViewById(R.id.imageButton3);
         final ImageButton imageButton4 = root.findViewById(R.id.imageButton4);
         final ImageButton imageButton5 = root.findViewById(R.id.imageButton5);
+        iconViewModel.getAllIconModels().observe(getViewLifecycleOwner(), iconModels -> {
+            for (IconModel i : iconModels) {
+                ImageButton imageButton = root.findViewById(i.getViewId());
+                ImageButton referenceButton = changeIconActivity.findViewById(i.getReferenceId());
+                if (imageButton == null || referenceButton == null)
+                    continue;
+                imageButton.setBackground(referenceButton.getBackground());
+                imageButton.setImageDrawable(referenceButton.getDrawable());
+            }
+        });
 
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //textView.setText(s);
+                currentMoneyValue.setText(s);
             }
         });
 
@@ -138,7 +166,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                         String name = transaktionTypes.getNameById(spinner.getSelectedItemPosition());
                         String date = addDate.getText().toString();
                         String price = addPrice.getText().toString();
-                        addNewTransaction(name, date,price, fbDialogue);
+                        addNewTransaction(name, date, price, fbDialogue);
                     }
                 });
 
@@ -151,9 +179,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             }
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -209,11 +237,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 String date = dtf.format(now);
                 String price = editText.getText().toString();
                 String name = textView.getText().toString();
-                addNewTransaction(name, date,price, fbDialogue);
+                addNewTransaction(name, date, price, fbDialogue);
             }
         });
 
-        switch (id){
+        switch (id) {
             case R.id.imageButton1:
                 textView.setText("Food");
                 break;
@@ -235,14 +263,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void addNewTransaction(String name, String date, String price, Dialog fbDialogue) {
-        if(name.isEmpty() || date.isEmpty() || price.equals("€")){
-            Toast.makeText(getContext(),"Bitte fülle alle Felder aus.", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty() || date.isEmpty() || price.equals("€")) {
+            Toast.makeText(getContext(), "Bitte fülle alle Felder aus.", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if(!regex.isValidInputValue(price)) {
-            Toast.makeText(getContext(),"Bitte gib einen positiven oder negativen Wert ein. z.B (+5 oder -5)", Toast.LENGTH_SHORT).show();
+        } else if (!regex.isValidInputValue(price)) {
+            Toast.makeText(getContext(), "Bitte gib einen positiven oder negativen Wert ein. z.B (+5 oder -5)", Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             price += "€";
             FinanceTransaction ft = new FinanceTransaction(name, date, price, user.getUid());
             ftViewModel.insert(ft);
@@ -260,6 +287,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         fbDialogue.setCanceledOnTouchOutside(true);
         fbDialogue.show();
 
+        for (ImageButton i : findAllIcons(fbDialogue)) {
+            i.setOnClickListener(view -> {
+                if (view instanceof ImageButton && v instanceof ImageButton) {
+                    ImageButton replaceButton = (ImageButton) view;
+                    ImageButton button = (ImageButton) v;
+
+                    IconModel iconModel = iconViewModel.getAllIconModels().getValue().stream()
+                                                       .filter(icon -> icon.getViewId() == button.getId()).findFirst().orElse(null);
+                    if (iconModel == null) {
+                        iconModel = new IconModel(button.getId(), replaceButton.getId());
+                        iconViewModel.insert(iconModel);
+                    } else {
+                        iconModel.setReferenceId(replaceButton.getId());
+                        iconViewModel.update(iconModel);
+                    }
+
+
+                    fbDialogue.dismiss();
+                }
+            });
+        }
+
         final TextView textView = fbDialogue.findViewById(R.id.shortkeyID);
         final ImageButton closeButton = fbDialogue.findViewById(R.id.shortkeyCloseIcons);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +318,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             }
         });
 
-        switch (id){
+        switch (id) {
             case R.id.imageButton1:
                 System.out.println("test1 Hold");
                 return true;
@@ -291,19 +340,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         return false;
     }
 
+    private Set<ImageButton> findAllIcons(Dialog view) {
+        List<ImageButton> result = new ArrayList<>(); //TODO Get images dynamically
+        result.add(view.findViewById(R.id.shortkeyIcon1));
+        result.add(view.findViewById(R.id.shortkeyIcon2));
+        result.add(view.findViewById(R.id.shortkeyIcon3));
+        result.add(view.findViewById(R.id.shortkeyIcon4));
+        result.add(view.findViewById(R.id.shortkeyIcon5));
+        result.add(view.findViewById(R.id.shortkeyIcon6));
+        return result.stream().filter(Objects::nonNull).collect(Collectors.toSet());
+    }
+
     @Override
-    public void onAttach(@NonNull Context context){
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof onFragmentBtnSelected){
+        if (context instanceof onFragmentBtnSelected) {
             listener = (onFragmentBtnSelected) context;
         }
     }
+
     public interface onFragmentBtnSelected {
         void onButtonSelected();
     }
 
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 }
